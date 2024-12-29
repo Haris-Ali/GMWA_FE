@@ -3,9 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "primeicons/primeicons.css"; /* PrimeIcons */
-
-@import "assets/styles/fonts.scss";
+@use 'primeicons/primeicons.css';
 
 body {
     font-family: 'Poppins', Arial, sans-serif; /* Set the global font */

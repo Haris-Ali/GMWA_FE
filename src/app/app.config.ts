@@ -7,7 +7,7 @@ import {
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { provideHttpClient, withFetch } from "@angular/common/http";
 import { providePrimeNG } from "primeng/config";
-import Aura from "@primeng/themes/aura";
+import { ThemePreset } from "./theme";
 
 import { routes } from "./app.routes";
 
@@ -26,9 +26,11 @@ export const appConfig: ApplicationConfig = {
 		provideHttpClient(withFetch()),
 		providePrimeNG({
 			theme: {
-				preset: Aura,
+				preset: ThemePreset,
 				options: { darkModeSelector: false || "none" },
 			},
+			ripple: false,
+			inputStyle: "outlined",
 		}),
 	],
 };

@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
+const primeui = require("tailwindcss-primeui");
 module.exports = {
-	content: [
-		"./src/**/*.{html,ts,css,scss}",
-		"./node_modules/primeng/**/*.{js,ts,css,scss}",
-		"./node_modules/tailwindcss-primeui/**/*.{js,ts,css,scss}",
-	],
+	darkMode: ["selector", '[class="p-dark"]'],
+	content: ["./src/**/*.{html,ts,scss,css}", "./index.html"],
+	plugins: [primeui],
 	theme: {
-		extend: {},
+		screens: {
+			sm: "576px",
+			md: "768px",
+			lg: "992px",
+			xl: "1200px",
+			"2xl": "1920px",
+		},
 	},
-	plugins: [require("tailwindcss-primeui")],
 };

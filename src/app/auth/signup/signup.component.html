@@ -1,1 +1,126 @@
-<p>signup works!</p>
+<div class="h-screen flex">
+	<div class="hidden md:flex w-full bg-primary-700 items-center justify-center main_bg">
+		<div class="w-4/5">
+			<div class="flex items-center gap-1">
+				<div class="w-20 h-20 rounded-xl flex justify-center items-center bg-white">
+					<img src="assets/icon.png" alt="app icon" class="w-16 h-16">
+				</div>
+				<p class="font-black text-4xl text-white">GMWA</p>
+			</div>
+		</div>
+	</div>
+	<div class="w-full h-full flex justify-center bg-[#F6F7F7]">
+		<div class="flex flex-col justify-center min-h-screen w-4/5 overflow-hidden p-2">
+			<h1 class="font-semibold text-4xl mb-8">Sign Up For New Account</h1>
+			<form class="flex flex-col gap-6" (ngSubmit)="signup()">
+				<div class="flex flex-col items-start gap-2">
+					<label for="profilePic" class="font-bold text-base mb-[5px]">Profile Picture</label>
+					<div class="flex items-center gap-2">
+						<label
+							for="fileInput"
+							class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-md cursor-pointer hover:bg-blue-600"
+					  	>
+							<i class="pi pi-upload"></i>
+							<span>Choose a profile picture</span>
+					  	</label>
+						<input
+						  id="fileInput"
+						  type="file"
+						  class="hidden"
+						  accept="image/*"
+						  (change)="handleFileChange($event)"
+						/>
+					
+						<span class="text-gray-500">{{ fileName || 'No file chosen' }}</span>
+					</div>
+					<img
+						*ngIf="filePreview"
+						[src]="filePreview"
+						class="w-32 h-32 object-cover"
+						alt="File preview"
+					/>
+				</div>
+				<div>
+					<label for="firstName" class="font-bold text-base">First Name<span class="text-red-600">*</span></label>
+					<input 
+						id="firstName" 
+						type="name" 
+						autocomplete="false"
+						autofocus
+						pInputText 
+						placeholder="First name here..." 
+						[(ngModel)]="firstName" 
+						name="firstName" 
+						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
+						required
+					/>
+				</div>
+				<div>
+					<label for="middleName" class="font-bold text-base">Middle Name</label>
+					<input 
+						id="middleName" 
+						type="name" 
+						autocomplete="false"
+						autofocus
+						pInputText 
+						placeholder="Middle name here..." 
+						[(ngModel)]="middleName" 
+						name="middleName" 
+						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
+					/>
+				</div>
+				<div>
+					<label for="lastName" class="font-bold text-base">Last Name<span class="text-red-600">*</span></label>
+					<input 
+						id="lastName" 
+						type="name" 
+						autocomplete="false"
+						autofocus
+						pInputText 
+						placeholder="Last name here..." 
+						[(ngModel)]="lastName" 
+						name="lastName" 
+						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
+						required
+					/>
+				</div>
+				<div>
+					<label for="email" class="font-bold text-base">Email<span class="text-red-600">*</span></label>
+					<input 
+						id="email" 
+						type="email" 
+						autocomplete="false"
+						autofocus
+						pInputText 
+						placeholder="Email address here..." 
+						[(ngModel)]="email" 
+						name="email" 
+						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
+						required
+					/>
+				</div>
+				<div>
+					<label for="password" class="font-bold text-base">Password<span class="text-red-600">*</span></label>
+					<p-password 
+						id="password" 
+						placeholder="Password" 
+						[toggleMask]="true" 
+						[(ngModel)]="password" 
+						name="password" 
+						styleClass="rounded-md w-full mt-[5px] border outline-none" 
+						inputStyleClass="w-full p-[10]" 
+						[disabled]="loading"
+						required 
+					/>
+				</div>
+				<div class="flex justify-between items-center">
+					<p-button type="submit" label="Create Account" class="text-gray-400 rounded-md"></p-button>
+					<a href="/auth/login">
+						<p class="font-normal cursor-pointer text-sm border-b border-black">Have an account? Login</p>
+					</a>
+				</div>
+				<p-message *ngIf="errorMessage" severity="error" text="{{ errorMessage }}" class="mt-4"></p-message>
+			</form>
+		</div>
+	</div>
+</div>

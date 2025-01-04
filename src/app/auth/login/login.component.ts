@@ -1,14 +1,14 @@
 import { Component } from "@angular/core";
-import { Checkbox } from "primeng/checkbox";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+
+import { HttpService } from "../../../services/http.service";
+import { globals } from "../../../globals";
+
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
-import { FormsModule } from "@angular/forms";
-import { Card } from "primeng/card";
 import { Message } from "primeng/message";
-import { HttpService } from "../../../services/http.service";
-import { globals } from "../../../globals";
-import { CommonModule } from "@angular/common";
 
 @Component({
 	selector: "app-login",
@@ -16,11 +16,9 @@ import { CommonModule } from "@angular/common";
 	imports: [
 		CommonModule,
 		FormsModule,
-		// Checkbox,
 		ButtonModule,
 		InputTextModule,
 		PasswordModule,
-		Card,
 		Message,
 	],
 	providers: [HttpService],

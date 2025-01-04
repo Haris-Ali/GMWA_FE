@@ -5,3 +5,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.main_bg {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url("../public/assets/main_bg.jpg");
+}

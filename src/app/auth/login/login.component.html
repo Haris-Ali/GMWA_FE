@@ -29,9 +29,9 @@
 </div> -->
 
 
-<div class="surface-ground flex items-center justify-center min-h-screen min-w-screen overflow-hidden">
+<!-- <div class="surface-ground flex items-center justify-center min-h-screen min-w-screen overflow-hidden">
     <div class="flex flex-column items-center justify-center">
-        <!-- <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                 -->
+        <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                
         <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
             <div class="w-full surface-card py-20 px-5 sm:px-20" style="border-radius:53px">
                 <div class="text-center mb-5">
@@ -59,4 +59,27 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
+
+<div class="flex flex-col items-center justify-center h-screen bg-gray-100">
+	<p-card header="Login" class="w-96">
+	  <form (ngSubmit)="login()">
+		<div class="field mb-4">
+		  <label for="email" class="block text-sm font-medium">Email</label>
+		  <input id="email" type="email" pInputText [(ngModel)]="email" name="email" required />
+		</div>
+		<div class="field mb-4">
+		  <label for="password" class="block text-sm font-medium">Password</label>
+		  <input id="password" type="password" pPassword [(ngModel)]="password" name="password" required />
+		</div>
+		<button
+		  pButton
+		  type="submit"
+		  label="Login"
+		  [disabled]="loading"
+		  class="w-full mt-4"
+		></button>
+		<p-message *ngIf="errorMessage" severity="error" text="{{ errorMessage }}" class="mt-4"></p-message>
+	  </form>
+	</p-card>
+  </div>

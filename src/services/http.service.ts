@@ -1,7 +1,12 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import {
+	HttpClient,
+	HttpErrorResponse,
+	HttpHeaders,
+	HttpParams,
+} from "@angular/common/http";
 import { catchError, map } from "rxjs/operators";
-import { of, throwError } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 
@@ -15,108 +20,55 @@ export class HttpService {
 		private toastr: ToastrService
 	) {}
 
-	getRequest(url: string, params = {}, showerror = true) {
-		return this.http.get(url, { params: params, observe: "response" }).pipe(
-			map((res: any) => {
-				if (res["response"] === 401) {
-					this.handleUnauthenticated();
-				} else if (
-					res["status"] === 200 ||
-					res["response"] === 200 ||
-					res["response"] === 304 ||
-					res["response"] === 400
-				) {
-					if (res.body["response"] === 401) {
-						this.handleUnauthenticated();
-					} else {
-						return {
-							data: res.body,
-							response: res["status"],
-						};
-					}
-				} else if (showerror) {
-					throw new Error(res.body["message"]);
-				}
-				return {};
-			}),
-			catchError((err) => this.handleError(err) || of({}))
-		);
+	getRequest<T>(endpoint: string, params?: HttpParams): Observable<T> {
+		return this.http
+			.get<T>(endpoint, { params })
+			.pipe(catchError((error) => this.handleError(error)));
 	}
 
-	postRequest(url: string, params = {}, headers = {}) {
-		let httpOptions = this.checkHeaders(headers);
-
-		return this.http.post(url, params, { headers: httpOptions }).pipe(
-			map((res: any) => {
-				if (res["message"]) throw new Error(res["message"]);
-				else
-					return {
-						data: res,
-					};
-			}),
-			catchError((err: any) => this.handleError(err) || of({}))
-		);
+	postRequest<T>(
+		endpoint: string,
+		body: any,
+		headers?: HttpHeaders
+	): Observable<T> {
+		let httpHeaders = this.checkHeaders(headers);
+		return this.http
+			.post<T>(endpoint, body, { headers: httpHeaders })
+			.pipe(catchError((error) => this.handleError(error)));
 	}
 
-	private handleError(error: HttpErrorResponse) {
+	private handleError(error: HttpErrorResponse): Observable<never> {
+		let errorMessage: string = "An unknown error occurred";
+		console.log(error);
 		if (error.error instanceof ErrorEvent) {
-			// A client-side or network error occurred. Handle it accordingly.
-			return throwError(
-				() => new Error("An error occurred: " + error.error.message)
-			);
+			errorMessage = `Client-side error: ${error.error.message}`;
 		} else {
-			if (error && error.status === 401) {
-				localStorage.removeItem("user-data");
-				localStorage.removeItem("jwtToken");
-				this.router.navigateByUrl("/auth/login");
-				return throwError(() => new Error("Unauthorized"));
+			if (error.status === 401) {
+				errorMessage = "Your session has expired. Please log in again.";
+				this.handleUnauthenticated(errorMessage);
 			} else {
-				if (error.status === 0) {
-					console.error(
-						`Request returned code ${error.status}, ` +
-							`body was: ${error.error}`
-					);
-					return throwError(
-						() => new Error("API Server is not responding.")
-					);
-				} else if (error.error && error.error.success === 0) {
-					return throwError(() => new Error(error.error.message));
-				} else if (error.error && error.error.message) {
-					if (error.status === 400)
-						this.showError(error.error.message);
-					if (error.status === 403)
-						this.showError(error.error.message);
-					else
-						this.showError(
-							"You must be login to perform this action"
-						);
-					// this.showError(error.error.message);
-				} else console.log(error);
+				errorMessage = `Server-side error: ${error.status} - ${error.message}`;
+				this.showError(errorMessage);
 			}
-			// The backend returned an unsuccessful response code.
-			// The response body may contain clues as to what went wrong,
-			console.error(
-				`Backend returned code ${error.status}, ` +
-					`body was: ${error.error}`
-			);
-			return throwError(() => new Error(error.error.message));
 		}
+		console.error(errorMessage);
+		return throwError(() => new Error(errorMessage));
 	}
 
-	private checkHeaders(headers: {}) {
-		if (Object.keys(headers).length) {
+	private checkHeaders(headers?: HttpHeaders): HttpHeaders {
+		if (headers && Object.keys(headers.keys()).length > 0) {
 			return headers;
 		} else
-			return {
+			return new HttpHeaders({
 				"Content-Type": "application/json",
-			};
+			});
 	}
 
 	handleUnauthenticated(msg: string = "") {
 		if (msg) this.showError(msg);
 		localStorage.removeItem("jwtToken");
 		localStorage.removeItem("user-data");
-		return this.router.navigateByUrl("/auth/login");
+		this.router.navigateByUrl("/auth/login");
 	}
 
 	showSuccess = (msg: string, title: string) => {

@@ -1,13 +1,24 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+	ApplicationConfig,
+	ErrorHandler,
+	provideZoneChangeDetection,
+} from "@angular/core";
 import {
 	provideRouter,
 	withEnabledBlockingInitialNavigation,
 	withInMemoryScrolling,
 } from "@angular/router";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-import { provideHttpClient, withFetch } from "@angular/common/http";
+import {
+	provideHttpClient,
+	withFetch,
+	withInterceptors,
+} from "@angular/common/http";
 import { providePrimeNG } from "primeng/config";
 import { ThemePreset } from "./theme";
+import { provideToastr } from "ngx-toastr";
+import { appInterceptor } from "../services/app.interceptor";
+import { GlobalErrorHandler } from "../services/globalErrorHandler";
 
 import { routes } from "./app.routes";
 
@@ -23,7 +34,9 @@ export const appConfig: ApplicationConfig = {
 			withEnabledBlockingInitialNavigation()
 		),
 		provideAnimationsAsync(),
-		provideHttpClient(withFetch()),
+		provideToastr(),
+		provideHttpClient(withFetch(), withInterceptors([appInterceptor])),
+		{ provide: ErrorHandler, useClass: GlobalErrorHandler },
 		providePrimeNG({
 			theme: {
 				preset: ThemePreset,

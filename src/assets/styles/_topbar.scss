@@ -7,11 +7,12 @@
     left: 0;
     top: 0;
     width: 100%;
-    padding: 0 2rem;
-    background-color: var(--surface-card);
+    padding: 0 1rem;
+    background-color: var(--p-surface-0);
     transition: left var(--layout-section-transition-duration);
     display: flex;
     align-items: center;
+	justify-content: space-between;
 
     .layout-topbar-logo-container {
         width: 20rem;
@@ -28,8 +29,9 @@
         font-weight: 500;
         gap: 0.5rem;
 
-        svg {
-            width: 3rem;
+        img {
+            width: 2rem;
+			height: 2rem;
         }
 
         &:focus-visible {
@@ -95,6 +97,15 @@
         display: flex;
         gap: 1rem;
     }
+
+	.layout-topbar-menu {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	.layout-topbar-button i {
+		font-size: 1rem;
+	}
 }
 
 @media (max-width: 991px) {

@@ -3,16 +3,17 @@ import { environment } from './environments/environment';
 const baseUrl = environment.baseUrl;
 
 export const globals = {
-  appName: 'GMWA',
+	appName: "GMWA",
 
-  urls: {
-    auth: {
-      login: baseUrl + '/login',
-      logout: baseUrl + '/logout',
-      signup: baseUrl + '/signup',
-      forgotPassword: baseUrl + '/forgotPassword',
-    },
+	urls: {
+		auth: {
+			login: baseUrl + "/login",
+			logout: baseUrl + "/logout",
+			signup: baseUrl + "/signup",
+			forgotPassword: baseUrl + "/forgotPassword",
+			currentUser: baseUrl + "/currentUser",
+		},
 
-    // MORE API URLS HERE
-  },
+		// MORE API URLS HERE
+	},
 };

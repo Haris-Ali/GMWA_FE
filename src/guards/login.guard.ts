@@ -19,7 +19,8 @@ export class LoginGuard implements CanActivate {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean> | Promise<boolean> | boolean {
-		const user = JSON.parse(localStorage.getItem("user-data") || "{}");
+		const storedData = localStorage.getItem("user-data");
+		const user = storedData ? JSON.parse(storedData) : null;
 		if (user !== null) {
 			this.router.navigate(["/dashboard"]);
 			return false;

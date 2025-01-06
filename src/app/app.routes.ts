@@ -3,10 +3,11 @@ import { Routes } from '@angular/router';
 import { LoginGuard } from "../guards/login.guard";
 import { AuthGuard } from "../guards/auth.guard";
 
-import { LoginComponent } from "./auth/login/login.component";
-import { SignupComponent } from "./auth/signup/signup.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
+import { LoginComponent } from "./components/auth/login/login.component";
+import { SignupComponent } from "./components/auth/signup/signup.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { AppLayoutComponent } from "./layout/app.layout.component";
+import { NotfoundComponent } from "./components/notfound.component";
 
 export const routes: Routes = [
 	{
@@ -15,7 +16,7 @@ export const routes: Routes = [
 		children: [
 			{
 				title: "Dashboard",
-				path: "dashboard",
+				path: "",
 				component: DashboardComponent,
 				// canActivate: [AuthGuard],
 			},
@@ -32,5 +33,14 @@ export const routes: Routes = [
 		path: "auth/signup",
 		component: SignupComponent,
 		// canActivate: [LoginGuard],
+	},
+	{
+		title: "Not Found",
+		path: "not-found",
+		component: NotfoundComponent,
+	},
+	{
+		path: "**",
+		redirectTo: "/not-found",
 	},
 ];

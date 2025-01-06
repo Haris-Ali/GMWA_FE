@@ -4,6 +4,7 @@ import { filter, Subscription } from "rxjs";
 import { LayoutService } from "./service/app.layout.service";
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppTopBarComponent } from "./app.topbar.component";
+import { AppFooterComponent } from "./app.footer.component";
 import { CommonModule } from "@angular/common";
 
 @Component({
@@ -14,6 +15,7 @@ import { CommonModule } from "@angular/common";
 		RouterModule,
 		AppSidebarComponent,
 		AppTopBarComponent,
+		AppFooterComponent,
 	],
 	providers: [LayoutService],
 	templateUrl: "./app.layout.component.html",

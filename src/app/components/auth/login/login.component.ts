@@ -2,8 +2,8 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { HttpService } from "../../../services/http.service";
-import { globals } from "../../../globals";
+import { HttpService } from "../../../../services/http.service";
+import { globals } from "../../../../globals";
 
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";

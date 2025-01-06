@@ -12,7 +12,9 @@ import { globals } from "../globals";
 import { HttpService } from "../services/http.service";
 import { map, catchError } from "rxjs/operators";
 
-@Injectable()
+@Injectable({
+	providedIn: "root",
+})
 export class AuthGuard implements CanActivate {
 	constructor(private httpService: HttpService, private router: Router) {}
 
@@ -20,7 +22,8 @@ export class AuthGuard implements CanActivate {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean> | Promise<boolean> | boolean {
-		const user = JSON.parse(localStorage.getItem("user-data") || "{}");
+		const storedData = localStorage.getItem("user-data");
+		const user = storedData ? JSON.parse(storedData) : null;
 		if (user !== null) return true;
 		else {
 			return this.httpService

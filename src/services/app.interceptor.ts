@@ -1,7 +1,8 @@
 import { HttpInterceptorFn } from "@angular/common/http";
 
 export const appInterceptor: HttpInterceptorFn = (req, next) => {
-	let jwtToken = JSON.parse(localStorage.getItem("jwtToken") || "{}");
+	const storedData = localStorage.getItem("jwtToken");
+	const jwtToken = storedData ? JSON.parse(storedData) : null;
 	if (jwtToken) {
 		req = req.clone({
 			setHeaders: {

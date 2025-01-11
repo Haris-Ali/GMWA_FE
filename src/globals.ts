@@ -17,5 +17,8 @@ export const globals = {
 		},
 
 		// MORE API URLS HERE
+		dashboard: {
+			data: baseUrl + "/stats",
+		},
 	},
 };

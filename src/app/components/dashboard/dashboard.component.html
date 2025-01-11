@@ -1,1 +1,46 @@
-<p>dashboard works!</p>
+<div class="grid grid-cols-12 gap-8">
+	@for (card of dashboardCards; track $index) {
+		<div class="col-span-12 lg:col-span-6 xl:col-span-4">
+			<div class="card mb-0 h-full">
+				@if (card.dataKey !== 'quickLinks') {
+					<div class="flex justify-between mb-4">
+						<div>
+							<span class="block text-muted-color font-medium mb-4">{{ card.title }}</span>
+							<div class="text-surface-900 dark:text-surface-0 font-medium text-xl">152</div>
+						</div>
+						<div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem;">
+							<i class="text-blue-500 !text-xl" [ngClass]="card.icon"></i>
+						</div>
+					</div>
+				}
+				@else {
+					<div class="flex flex-col mb-4">
+						<div>
+							<span class="block text-muted-color font-medium mb-4">{{ card.title }}</span>
+						</div>
+						<div>
+							<ul>
+								@if (userRole === 'teacher') {
+									<li>
+										<a routerLink="/invitation/invite-user" class="font-normal cursor-pointer text-sm border-b border-black">Invite New User(s)</a>
+									</li>
+									<li>
+										<a routerLink="/classroom/new" class="font-normal cursor-pointer text-sm border-b border-black">Create New Classroom</a>
+									</li>
+								}
+								@else {
+									<li>
+										<a routerLink="/invitation/invite-user" class="font-normal cursor-pointer text-sm border-b border-black">Invite New User(s)</a>
+									</li>
+									<li>
+										<a routerLink="/registrations/list" class="font-normal cursor-pointer text-sm border-b border-black">View Registrations</a>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	}
+</div>

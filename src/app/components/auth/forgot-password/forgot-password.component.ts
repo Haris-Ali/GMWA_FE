@@ -7,50 +7,42 @@ import { globals } from "../../../../globals";
 
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
-import { PasswordModule } from "primeng/password";
 import { Message } from "primeng/message";
-import { Checkbox } from "primeng/checkbox";
 
 @Component({
-	selector: "app-login",
+	selector: "app-forgot-password",
 	standalone: true,
 	imports: [
 		CommonModule,
 		FormsModule,
 		ButtonModule,
 		InputTextModule,
-		PasswordModule,
 		Message,
-		Checkbox,
 	],
 	providers: [HttpService],
-	templateUrl: "./login.component.html",
-	styleUrl: "./login.component.scss",
+	templateUrl: "./forgot-password.component.html",
+	styleUrl: "./forgot-password.component.scss",
 })
-export class LoginComponent {
+export class ForgotPasswordComponent {
 	globals = globals;
 	email: string = "";
-	password: string = "";
-	rememberMe: boolean = false;
 	errorMessage: string = "";
 	loading: boolean = false;
 
 	httpService = inject(HttpService);
 
-	login() {
+	forgotPassword() {
 		console.log(this.email);
-		console.log(this.password);
-		console.log(this.rememberMe);
-		const body = {
-			email: this.email,
-			password: this.password,
-		};
+		const body = { email: this.email };
 		this.loading = true;
 		this.httpService
-			.postRequest(this.globals.urls.auth.login, body)
+			.postRequest(this.globals.urls.auth.forgotPassword, body)
 			.subscribe({
 				next: (response) => {
-					console.log("Login successful: ", response);
+					console.log(
+						"Forgot password email sent successful: ",
+						response
+					);
 					this.loading = false;
 				},
 				error: (error) => {

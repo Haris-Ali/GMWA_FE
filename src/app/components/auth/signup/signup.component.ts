@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
@@ -38,7 +38,7 @@ export class SignupComponent {
 	errorMessage: string = "";
 	loading: boolean = false;
 
-	constructor(private httpService: HttpService) {}
+	httpService = inject(HttpService);
 
 	signup() {
 		console.log(this.email);

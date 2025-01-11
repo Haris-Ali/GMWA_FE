@@ -11,6 +11,8 @@ export const globals = {
 			logout: baseUrl + "/logout",
 			signup: baseUrl + "/signup",
 			forgotPassword: baseUrl + "/forgotPassword",
+			confirmationInstructions: baseUrl + "/confirmationInstructions",
+			unlockInstructions: baseUrl + "/unlockInstructions",
 			currentUser: baseUrl + "/currentUser",
 		},
 

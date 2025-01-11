@@ -120,6 +120,17 @@
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Have an account? Login</p>
 					</a>
 				</div>
+				<div class="flex flex-col gap-2">
+					<a href="/auth/forgot-password" class="w-fit">
+						<p class="font-normal cursor-pointer text-sm border-b border-black">Forgot your password?</p>
+					</a>
+					<a href="/auth/confirmation" class="w-fit">
+						<p class="font-normal cursor-pointer text-sm border-b border-black">Didn't receive confirmation instructions?</p>
+					</a>
+					<a href="/auth/unlock" class="w-fit">
+						<p class="font-normal cursor-pointer text-sm border-b border-black">Didn't receive unlock instructions?</p>
+					</a>
+				</div>
 				<p-message *ngIf="errorMessage" severity="error" text="{{ errorMessage }}" class="mt-4"></p-message>
 			</form>
 		</div>

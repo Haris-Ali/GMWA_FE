@@ -8,6 +8,9 @@ import { SignupComponent } from "./components/auth/signup/signup.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { NotfoundComponent } from "./components/notfound.component";
+import { ForgotPasswordComponent } from "./components/auth/forgot-password/forgot-password.component";
+import { ConfirmationInstructionsComponent } from "./components/auth/confirmation-instructions/confirmation-instructions.component";
+import { UnlockInstructionsComponent } from "./components/auth/unlock-instructions/unlock-instructions.component";
 
 export const routes: Routes = [
 	{
@@ -33,6 +36,24 @@ export const routes: Routes = [
 		path: "auth/signup",
 		component: SignupComponent,
 		// canActivate: [LoginGuard],
+	},
+	{
+		title: "Forgot Password",
+		path: "auth/forgot-password",
+		component: ForgotPasswordComponent,
+		// canActivate: [LoginGuard]
+	},
+	{
+		title: "Confirmation Instructions",
+		path: "auth/confirmation",
+		component: ConfirmationInstructionsComponent,
+		// canActivate: [LoginGuard]
+	},
+	{
+		title: "Unlock Instructions",
+		path: "auth/unlock",
+		component: UnlockInstructionsComponent,
+		// canActivate: [LoginGuard]
 	},
 	{
 		title: "Not Found",

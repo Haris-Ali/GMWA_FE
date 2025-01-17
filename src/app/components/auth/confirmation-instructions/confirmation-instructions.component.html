@@ -13,7 +13,7 @@
 	<div class="w-full h-full flex justify-center bg-[#F6F7F7]">
 		<div class="flex flex-col justify-center min-h-screen w-4/5 overflow-hidden p-2">
 			<h1 class="font-semibold text-4xl mb-8">Confirmation Instructions</h1>
-			<form class="flex flex-col gap-6" (ngSubmit)="confirmationInstructions()">
+			<form #form="ngForm" class="flex flex-col gap-6" (ngSubmit)="form.valid && confirmationInstructions()">
 				<div>
 					<label for="email" class="font-bold text-base">Email<span class="text-red-600">*</span></label>
 					<input 
@@ -27,10 +27,15 @@
 						name="email" 
 						class="w-full rounded-md mt-[5px] border outline-none" 
 						required
+						#emailCtrl="ngModel"
 					/>
+					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600 mt-2">
+						<span *ngIf="emailCtrl.errors?.required">Email is required</span>
+      					<span *ngIf="emailCtrl.errors?.email">Enter a valid email address</span>
+					</div>
 				</div>
 				<div class="flex justify-between items-center">
-					<p-button type="submit" label="Send Confirmation Instructions" class="text-gray-400 rounded-md"></p-button>
+					<p-button type="submit" label="Send Confirmation Instructions" class="text-gray-400 rounded-md" [disabled]="form.invalid"></p-button>
 					<a routerLink="/auth/login">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Have an account? Login</p>
 					</a>

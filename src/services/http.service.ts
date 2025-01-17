@@ -37,6 +37,35 @@ export class HttpService {
 			.pipe(catchError((error) => this.handleError(error)));
 	}
 
+	putRequest<T>(
+		endpoint: string,
+		body: any,
+		headers?: HttpHeaders
+	): Observable<T> {
+		let httpHeaders = this.checkHeaders(headers);
+		return this.http
+			.put<T>(endpoint, body, { headers: httpHeaders })
+			.pipe(catchError((error) => this.handleError(error)));
+	}
+
+	patchRequest<T>(
+		endpoint: string,
+		body: any,
+		headers?: HttpHeaders
+	): Observable<T> {
+		let httpHeaders = this.checkHeaders(headers);
+		return this.http
+			.patch<T>(endpoint, body, { headers: httpHeaders })
+			.pipe(catchError((error) => this.handleError(error)));
+	}
+
+	deleteRequest<T>(endpoint: string, headers?: HttpHeaders): Observable<T> {
+		let httpHeaders = this.checkHeaders(headers);
+		return this.http
+			.delete<T>(endpoint, { headers: httpHeaders })
+			.pipe(catchError((error) => this.handleError(error)));
+	}
+
 	private handleError(error: HttpErrorResponse): Observable<never> {
 		let errorMessage: string = "An unknown error occurred";
 		console.log(error);

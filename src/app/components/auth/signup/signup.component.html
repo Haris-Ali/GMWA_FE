@@ -57,7 +57,7 @@
 						#firstNameCtrl="ngModel"
 						[ngClass]="{'ng-invalid ng-dirty': firstNameCtrl.invalid && firstNameCtrl.dirty}"
 					/>
-					<div *ngIf="firstNameCtrl.invalid && firstNameCtrl.dirty" class="text-red-600">
+					<div *ngIf="firstNameCtrl.invalid && firstNameCtrl.dirty" class="text-red-600 mt-2">
 						First name is required
 					</div>
 				</div>
@@ -90,7 +90,7 @@
 						required
 						#lastNameCtrl="ngModel"
 					/>
-					<div *ngIf="lastNameCtrl.invalid && lastNameCtrl.dirty" class="text-red-600">
+					<div *ngIf="lastNameCtrl.invalid && lastNameCtrl.dirty" class="text-red-600 mt-2">
 						Last name is required
 					</div>
 				</div>
@@ -109,7 +109,7 @@
 						required
 						#emailCtrl="ngModel"
 					/>
-					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600">
+					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600 mt-2">
 						<span *ngIf="emailCtrl.errors?.required">Email is required.</span>
       					<span *ngIf="emailCtrl.errors?.email">Enter a valid email address</span>
 					</div>
@@ -127,9 +127,12 @@
 						[disabled]="loading"
 						required 
 						#passwordCtrl="ngModel"
+						feedback="false"
+						minlength="8"
 					/>
-					<div *ngIf="passwordCtrl.invalid && passwordCtrl.dirty" class="text-red-600">
-						Password is required
+					<div *ngIf="passwordCtrl.invalid && passwordCtrl.dirty" class="text-red-600 mt-2">
+						<span *ngIf="passwordCtrl.errors?.required">Password is required</span>
+						<span *ngIf="passwordCtrl.errors?.minlength">Password must be 8 characters minimum</span>
 					</div>
 				</div>
 				<div>
@@ -143,7 +146,7 @@
 						required 
 						#roleCtrl="ngModel"
 					/>
-					<div *ngIf="roleCtrl.invalid && roleCtrl.dirty" class="text-red-600">
+					<div *ngIf="roleCtrl.invalid && roleCtrl.dirty" class="text-red-600 mt-2">
 						Role is required
 					</div>
 				</div>

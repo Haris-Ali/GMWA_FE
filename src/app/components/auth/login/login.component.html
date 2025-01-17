@@ -29,7 +29,7 @@
 						required
 						#emailCtrl="ngModel"
 					/>
-					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600">
+					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600 mt-2">
 						<span *ngIf="emailCtrl.errors?.required">Email is required</span>
       					<span *ngIf="emailCtrl.errors?.email">Enter a valid email address</span>
 					</div>
@@ -47,9 +47,12 @@
 						[disabled]="loading"
 						required 
 						#passwordCtrl="ngModel"
+						feedback="false"
+						minlength="8"
 					/>
-					<div *ngIf="passwordCtrl.invalid && passwordCtrl.dirty" class="text-red-600">
-						Password is required
+					<div *ngIf="passwordCtrl.invalid && passwordCtrl.dirty" class="text-red-600 mt-2">
+						<span *ngIf="passwordCtrl.errors?.required">Password is required</span>
+						<span *ngIf="passwordCtrl.errors?.minlength">Password must be 8 characters minimum</span>
 					</div>
 				</div>
 				<div>

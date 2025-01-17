@@ -13,7 +13,7 @@
 	<div class="w-full h-full flex justify-center bg-[#F6F7F7]">
 		<div class="flex flex-col justify-center min-h-screen w-4/5 overflow-hidden p-2">
 			<h1 class="font-semibold text-4xl mb-8">Sign Up For New Account</h1>
-			<form class="flex flex-col gap-6" (ngSubmit)="signup()">
+			<form #form="ngForm" class="flex flex-col gap-6" (ngSubmit)="form.valid && signup()">
 				<div class="flex flex-col items-start gap-2">
 					<label for="profilePic" class="font-bold text-base mb-[5px]">Profile Picture</label>
 					<div class="flex items-center gap-2">
@@ -54,7 +54,12 @@
 						name="firstName" 
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 						required
+						#firstNameCtrl="ngModel"
+						[ngClass]="{'ng-invalid ng-dirty': firstNameCtrl.invalid && firstNameCtrl.dirty}"
 					/>
+					<div *ngIf="firstNameCtrl.invalid && firstNameCtrl.dirty" class="text-red-600">
+						First name is required
+					</div>
 				</div>
 				<div>
 					<label for="middleName" class="font-bold text-base">Middle Name</label>
@@ -83,7 +88,11 @@
 						name="lastName" 
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 						required
+						#lastNameCtrl="ngModel"
 					/>
+					<div *ngIf="lastNameCtrl.invalid && lastNameCtrl.dirty" class="text-red-600">
+						Last name is required
+					</div>
 				</div>
 				<div>
 					<label for="email" class="font-bold text-base">Email<span class="text-red-600">*</span></label>
@@ -98,13 +107,18 @@
 						name="email" 
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 						required
+						#emailCtrl="ngModel"
 					/>
+					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600">
+						<span *ngIf="emailCtrl.errors?.required">Email is required.</span>
+      					<span *ngIf="emailCtrl.errors?.email">Enter a valid email address</span>
+					</div>
 				</div>
 				<div>
 					<label for="password" class="font-bold text-base">Password<span class="text-red-600">*</span></label>
 					<p-password 
 						id="password" 
-						placeholder="Password" 
+						placeholder="Password here..." 
 						[toggleMask]="true" 
 						[(ngModel)]="password" 
 						name="password" 
@@ -112,22 +126,41 @@
 						inputStyleClass="w-full p-[10]" 
 						[disabled]="loading"
 						required 
+						#passwordCtrl="ngModel"
 					/>
+					<div *ngIf="passwordCtrl.invalid && passwordCtrl.dirty" class="text-red-600">
+						Password is required
+					</div>
+				</div>
+				<div>
+					<label for="role" class="font-bold text-base">Role<span class="text-red-600">*</span></label>
+					<p-select 
+						[options]="roles"
+						[(ngModel)]="role" 
+						name="role"
+						placeholder="Select a role" 
+						class="rounded-md w-full mt=[5px] border outline-none"
+						required 
+						#roleCtrl="ngModel"
+					/>
+					<div *ngIf="roleCtrl.invalid && roleCtrl.dirty" class="text-red-600">
+						Role is required
+					</div>
 				</div>
 				<div class="flex justify-between items-center">
-					<p-button type="submit" label="Create Account" class="text-gray-400 rounded-md"></p-button>
-					<a href="/auth/login">
+					<p-button type="submit" label="Create Account" class="text-gray-400 rounded-md" [disabled]="form.invalid"></p-button>
+					<a routerLink="/auth/login">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Have an account? Login</p>
 					</a>
 				</div>
 				<div class="flex flex-col gap-2">
-					<a href="/auth/forgot-password" class="w-fit">
+					<a routerLink="/auth/forgot-password" class="w-fit">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Forgot your password?</p>
 					</a>
-					<a href="/auth/confirmation" class="w-fit">
+					<a routerLink="/auth/confirmation" class="w-fit">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Didn't receive confirmation instructions?</p>
 					</a>
-					<a href="/auth/unlock" class="w-fit">
+					<a routerLink="/auth/unlock" class="w-fit">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Didn't receive unlock instructions?</p>
 					</a>
 				</div>

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 
 import {
 	CanActivate,
@@ -8,15 +8,20 @@ import {
 } from "@angular/router";
 
 import { Observable, of } from "rxjs";
-import { globals } from "../globals";
-import { HttpService } from "../services/http.service";
 import { map, catchError } from "rxjs/operators";
+
+import { HttpService } from "../services/http.service";
+import { UserService } from "../services/user.service";
+
+import { globals } from "../globals";
 
 @Injectable({
 	providedIn: "root",
 })
 export class AuthGuard implements CanActivate {
-	constructor(private httpService: HttpService, private router: Router) {}
+	httpService = inject(HttpService);
+	userService = inject(UserService);
+	router = inject(Router);
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
@@ -35,9 +40,11 @@ export class AuthGuard implements CanActivate {
 								"user-data",
 								JSON.stringify(user["data"])
 							);
+							this.userService.loadUserData();
 							return true;
 						} else {
 							localStorage.clear();
+							this.userService.resetRole();
 							this.router.navigate(["/auth/login"]);
 							return false;
 						}

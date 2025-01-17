@@ -1,6 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
 import { HttpService } from "../../../../services/http.service";
 import { globals } from "../../../../globals";
@@ -15,6 +16,7 @@ import { Message } from "primeng/message";
 	imports: [
 		CommonModule,
 		FormsModule,
+		RouterModule,
 		ButtonModule,
 		InputTextModule,
 		Message,

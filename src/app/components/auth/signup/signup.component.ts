@@ -1,6 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
 import { HttpService } from "../../../../services/http.service";
 import { globals } from "../../../../globals";
@@ -9,6 +10,7 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { Message } from "primeng/message";
+import { Select } from "primeng/select";
 
 @Component({
 	selector: "app-signup",
@@ -16,10 +18,12 @@ import { Message } from "primeng/message";
 	imports: [
 		CommonModule,
 		FormsModule,
+		RouterModule,
 		ButtonModule,
 		InputTextModule,
 		PasswordModule,
 		Message,
+		Select,
 	],
 	providers: [HttpService],
 	templateUrl: "./signup.component.html",
@@ -35,8 +39,11 @@ export class SignupComponent {
 	lastName: string = "";
 	email: string = "";
 	password: string = "";
+	role: string = "Teacher";
 	errorMessage: string = "";
 	loading: boolean = false;
+
+	roles: string[] = ["Teacher", "Student"];
 
 	httpService = inject(HttpService);
 
@@ -44,8 +51,13 @@ export class SignupComponent {
 		console.log(this.email);
 		console.log(this.password);
 		const body = {
+			avatar: this.profilePicture,
+			first_name: this.firstName,
+			middle_name: this.middleName,
+			last_name: this.lastName,
 			email: this.email,
 			password: this.password,
+			role: this.role.toLowerCase(),
 		};
 		this.loading = true;
 		this.httpService

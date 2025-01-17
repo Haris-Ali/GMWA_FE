@@ -1,6 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { Router, RouterModule } from "@angular/router";
 
 import { HttpService } from "../../../../services/http.service";
 import { globals } from "../../../../globals";
@@ -10,6 +11,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { Message } from "primeng/message";
 import { Checkbox } from "primeng/checkbox";
+import { UserService } from "../../../../services/user.service";
 
 @Component({
 	selector: "app-login",
@@ -17,6 +19,7 @@ import { Checkbox } from "primeng/checkbox";
 	imports: [
 		CommonModule,
 		FormsModule,
+		RouterModule,
 		ButtonModule,
 		InputTextModule,
 		PasswordModule,
@@ -36,6 +39,8 @@ export class LoginComponent {
 	loading: boolean = false;
 
 	httpService = inject(HttpService);
+	userService = inject(UserService);
+	router = inject(Router);
 
 	login() {
 		console.log(this.email);
@@ -52,6 +57,10 @@ export class LoginComponent {
 				next: (response) => {
 					console.log("Login successful: ", response);
 					this.loading = false;
+					const userData = { email: this.email, role: "teacher" };
+					localStorage.setItem("user", JSON.stringify(userData));
+					this.userService.loadUserData();
+					this.router.navigate(["/dashboard"]);
 				},
 				error: (error) => {
 					this.errorMessage = error.message;

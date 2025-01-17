@@ -7,13 +7,13 @@ export const globals = {
 
 	urls: {
 		auth: {
-			login: baseUrl + "/login",
-			logout: baseUrl + "/logout",
-			signup: baseUrl + "/signup",
-			forgotPassword: baseUrl + "/forgotPassword",
-			confirmationInstructions: baseUrl + "/confirmationInstructions",
-			unlockInstructions: baseUrl + "/unlockInstructions",
-			currentUser: baseUrl + "/currentUser",
+			login: baseUrl + "/users/sign_in",
+			logout: baseUrl + "/users/sign_out",
+			signup: baseUrl + "/users/sign_up",
+			forgotPassword: baseUrl + "/users/forgotPassword",
+			confirmationInstructions: baseUrl + "/users/confirmation/new",
+			unlockInstructions: baseUrl + "/users/unlock/new",
+			currentUser: baseUrl + "/users/sign_in",
 		},
 
 		// MORE API URLS HERE

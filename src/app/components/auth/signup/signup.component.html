@@ -30,6 +30,7 @@
 						  class="hidden"
 						  accept="image/*"
 						  (change)="handleFileChange($event)"
+						  [disabled]="loading"
 						/>
 					
 						<span class="text-gray-500">{{ fileName || 'No file chosen' }}</span>
@@ -54,6 +55,7 @@
 						name="firstName" 
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 						required
+						[disabled]="loading"
 						#firstNameCtrl="ngModel"
 						[ngClass]="{'ng-invalid ng-dirty': firstNameCtrl.invalid && firstNameCtrl.dirty}"
 					/>
@@ -71,7 +73,8 @@
 						pInputText 
 						placeholder="Middle name here..." 
 						[(ngModel)]="middleName" 
-						name="middleName" 
+						name="middleName"
+						[disabled]="loading"
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 					/>
 				</div>
@@ -88,6 +91,7 @@
 						name="lastName" 
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 						required
+						[disabled]="loading"
 						#lastNameCtrl="ngModel"
 					/>
 					<div *ngIf="lastNameCtrl.invalid && lastNameCtrl.dirty" class="text-red-600 mt-2">
@@ -99,7 +103,7 @@
 					<input 
 						id="email" 
 						type="email" 
-						autocomplete="false"
+						autocomplete="off"
 						autofocus
 						pInputText 
 						placeholder="Email address here..." 
@@ -107,11 +111,13 @@
 						name="email" 
 						class="w-full rounded-md mt-[5px] p-[10] border outline-none" 
 						required
+						[disabled]="loading"
 						#emailCtrl="ngModel"
+						pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
 					/>
 					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600 mt-2">
 						<span *ngIf="emailCtrl.errors?.required">Email is required.</span>
-      					<span *ngIf="emailCtrl.errors?.email">Enter a valid email address</span>
+      					<span *ngIf="emailCtrl.errors?.pattern">Enter a valid email address</span>
 					</div>
 				</div>
 				<div>
@@ -137,12 +143,12 @@
 				</div>
 				<div>
 					<label for="role" class="font-bold text-base">Role<span class="text-red-600">*</span></label>
-					<p-select 
-						[options]="roles"
+					<p-selectbutton 
+						[options]="roles" 
 						[(ngModel)]="role" 
 						name="role"
 						placeholder="Select a role" 
-						class="rounded-md w-full mt=[5px] border outline-none"
+						class="rounded-md w-full mt=[5px] outline-none"
 						required 
 						#roleCtrl="ngModel"
 					/>
@@ -151,7 +157,7 @@
 					</div>
 				</div>
 				<div class="flex justify-between items-center">
-					<p-button type="submit" label="Create Account" class="text-gray-400 rounded-md" [disabled]="form.invalid"></p-button>
+					<p-button type="submit" label="Create Account" class="text-gray-400 rounded-md" [disabled]="form.invalid || loading"></p-button>
 					<a routerLink="/auth/login">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Have an account? Login</p>
 					</a>

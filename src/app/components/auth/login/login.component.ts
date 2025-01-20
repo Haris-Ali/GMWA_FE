@@ -63,6 +63,7 @@ export class LoginComponent {
 					this.router.navigate(["/dashboard"]);
 				},
 				error: (error) => {
+					console.log(error);
 					this.errorMessage = error.message;
 					this.loading = false;
 				},

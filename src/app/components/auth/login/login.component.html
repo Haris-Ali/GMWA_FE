@@ -19,7 +19,7 @@
 					<input 
 						id="email" 
 						type="email" 
-						autocomplete="false"
+						autocomplete="off"
 						autofocus
 						pInputText 
 						placeholder="Email address here..." 
@@ -28,10 +28,12 @@
 						class="w-full rounded-md mt-[5px] border outline-none" 
 						required
 						#emailCtrl="ngModel"
+						[disabled]="loading"
+						pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
 					/>
 					<div *ngIf="emailCtrl.invalid && emailCtrl.dirty" class="text-red-600 mt-2">
 						<span *ngIf="emailCtrl.errors?.required">Email is required</span>
-      					<span *ngIf="emailCtrl.errors?.email">Enter a valid email address</span>
+      					<span *ngIf="emailCtrl.errors?.pattern">Enter a valid email address</span>
 					</div>
 				</div>
 				<div>
@@ -63,11 +65,12 @@
 						inputId="rm"
 						class="w-full"
 						name="rememberMe"
+						[disabled]="loading"
 					/>
 					<label for="rm" class="font-bold text-base ml-2">Remember Me</label>
 				</div>
 				<div class="flex justify-between items-center">
-					<p-button type="submit" label="Login" class="text-gray-400 rounded-md" [disabled]="form.invalid"></p-button>
+					<p-button type="submit" label="Login" class="text-gray-400 rounded-md" [disabled]="form.invalid || loading"></p-button>
 					<a routerLink="/auth/signup">
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Don't have an account? Signup</p>
 					</a>

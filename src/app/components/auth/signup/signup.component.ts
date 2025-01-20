@@ -10,7 +10,7 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { Message } from "primeng/message";
-import { Select } from "primeng/select";
+import { SelectButton } from "primeng/selectbutton";
 
 @Component({
 	selector: "app-signup",
@@ -23,7 +23,7 @@ import { Select } from "primeng/select";
 		InputTextModule,
 		PasswordModule,
 		Message,
-		Select,
+		SelectButton,
 	],
 	providers: [HttpService],
 	templateUrl: "./signup.component.html",

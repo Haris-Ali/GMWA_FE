@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import {
 	HttpClient,
 	HttpErrorResponse,
@@ -8,17 +8,15 @@ import {
 import { catchError } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
 import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
+import { MessageService } from "primeng/api";
 
 @Injectable({
 	providedIn: "root",
 })
 export class HttpService {
-	constructor(
-		private http: HttpClient,
-		private router: Router,
-		private toastr: ToastrService
-	) {}
+	http = inject(HttpClient);
+	router = inject(Router);
+	messageService = inject(MessageService);
 
 	getRequest<T>(endpoint: string, params?: HttpParams): Observable<T> {
 		return this.http
@@ -90,6 +88,7 @@ export class HttpService {
 		} else
 			return new HttpHeaders({
 				"Content-Type": "application/json",
+				Accept: "application/json",
 			});
 	}
 
@@ -101,23 +100,41 @@ export class HttpService {
 	}
 
 	showSuccess = (msg: string, title: string) => {
-		this.toastr.success(msg, "", {
-			closeButton: true,
-			timeOut: 3000,
+		// this.toastr.success(msg, "", {
+		// 	closeButton: true,
+		// 	timeOut: 3000,
+		// });
+		this.messageService.add({
+			severity: "success",
+			summary: title || "Success",
+			detail: msg,
+			life: 3000,
 		});
 	};
 
 	showError = (msg: string, title: string = "") => {
-		this.toastr.error(msg, title, {
-			closeButton: true,
-			timeOut: 3000,
+		// this.toastr.error(msg, title, {
+		// 	closeButton: true,
+		// 	timeOut: 3000,
+		// });
+		this.messageService.add({
+			severity: "error",
+			summary: title || "Error",
+			detail: msg,
+			life: 3000,
 		});
 	};
 
 	showInfo = (msg: string) => {
-		this.toastr.info(msg, "", {
-			closeButton: true,
-			timeOut: 3000,
+		// this.toastr.info(msg, "", {
+		// 	closeButton: true,
+		// 	timeOut: 3000,
+		// });
+		this.messageService.add({
+			severity: "info",
+			summary: "Info",
+			detail: msg,
+			life: 3000,
 		});
 	};
 }

@@ -16,7 +16,6 @@ import {
 } from "@angular/common/http";
 import { providePrimeNG } from "primeng/config";
 import { ThemePreset } from "./theme";
-import { provideToastr } from "ngx-toastr";
 import { appInterceptor } from "../services/app.interceptor";
 import { GlobalErrorHandler } from "../services/globalErrorHandler";
 
@@ -34,7 +33,6 @@ export const appConfig: ApplicationConfig = {
 			withEnabledBlockingInitialNavigation()
 		),
 		provideAnimationsAsync(),
-		provideToastr(),
 		provideHttpClient(withFetch(), withInterceptors([appInterceptor])),
 		{ provide: ErrorHandler, useClass: GlobalErrorHandler },
 		providePrimeNG({

@@ -28,27 +28,27 @@ import { Message } from "primeng/message";
 export class UnlockInstructionsComponent {
 	globals = globals;
 	email: string = "";
-	errorMessage: string = "";
+	message: string = "";
 	loading: boolean = false;
+	severity: string = "error";
 
 	httpService = inject(HttpService);
 
 	unlockInstructions() {
-		console.log(this.email);
-		const body = { email: this.email };
+		const body = { user: { email: this.email } };
 		this.loading = true;
 		this.httpService
 			.postRequest(this.globals.urls.auth.unlockInstructions, body)
 			.subscribe({
 				next: (response) => {
-					console.log(
-						"Unlock instructions email sent successful: ",
-						response
-					);
+					this.message =
+						"Unlock instructions email sent successfully";
+					this.severity = "success";
 					this.loading = false;
 				},
 				error: (error) => {
-					this.errorMessage = error.message;
+					this.message = error.message ? error.message : error;
+					this.severity = "error";
 					this.loading = false;
 				},
 			});

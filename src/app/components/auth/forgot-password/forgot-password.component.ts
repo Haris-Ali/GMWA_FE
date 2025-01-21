@@ -28,27 +28,27 @@ import { Message } from "primeng/message";
 export class ForgotPasswordComponent {
 	globals = globals;
 	email: string = "";
-	errorMessage: string = "";
+	message: string = "";
 	loading: boolean = false;
+
+	severity: string = "error";
 
 	httpService = inject(HttpService);
 
 	forgotPassword() {
-		console.log(this.email);
-		const body = { email: this.email };
+		const body = { user: { email: this.email } };
 		this.loading = true;
 		this.httpService
 			.postRequest(this.globals.urls.auth.forgotPassword, body)
 			.subscribe({
 				next: (response) => {
-					console.log(
-						"Forgot password email sent successful: ",
-						response
-					);
+					this.message = "Forgot password email sent successfully";
+					this.severity = "success";
 					this.loading = false;
 				},
 				error: (error) => {
-					this.errorMessage = error.message;
+					this.message = error.message ? error.message : error;
+					this.severity = "error";
 					this.loading = false;
 				},
 			});

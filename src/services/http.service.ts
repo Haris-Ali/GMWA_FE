@@ -65,22 +65,32 @@ export class HttpService {
 	}
 
 	private handleError(error: HttpErrorResponse): Observable<never> {
-		let errorMessage: string = "An unknown error occurred";
-		console.log(error);
+		let errorMessage: any = "An unknown error occurred";
 		if (error.error instanceof ErrorEvent) {
 			errorMessage = `Client-side error: ${error.error.message}`;
 		} else {
 			if (error.status === 401) {
 				errorMessage = "Your session has expired. Please log in again.";
 				this.handleUnauthenticated(errorMessage);
-			} else {
-				errorMessage = `Server-side error: ${error.status} - ${error.message}`;
+			}
+			if (error.status === 422) {
+				let tempError = error.error.errors ? error.error.errors : error.error;
+				errorMessage = this.formatErrorMessage(tempError);
+				this.showError(errorMessage);
+			}
+			else {
+				errorMessage = `Server-side error: ${error.status} - ${error.error ? (error.error.message || error.error.error) : error.message}`;
 				this.showError(errorMessage);
 			}
 		}
-		console.error(errorMessage);
 		return throwError(() => new Error(errorMessage));
 	}
+
+	private formatErrorMessage = (errors: Record<string, string[]>) => {
+		return Object.entries(errors)
+		  .map(([field, messages]) => `${field} ${messages.join('. ')}`)
+		  .join('. ');
+	};
 
 	private checkHeaders(headers?: HttpHeaders): HttpHeaders {
 		if (headers && Object.keys(headers.keys()).length > 0) {
@@ -100,10 +110,6 @@ export class HttpService {
 	}
 
 	showSuccess = (msg: string, title: string) => {
-		// this.toastr.success(msg, "", {
-		// 	closeButton: true,
-		// 	timeOut: 3000,
-		// });
 		this.messageService.add({
 			severity: "success",
 			summary: title || "Success",
@@ -113,10 +119,6 @@ export class HttpService {
 	};
 
 	showError = (msg: string, title: string = "") => {
-		// this.toastr.error(msg, title, {
-		// 	closeButton: true,
-		// 	timeOut: 3000,
-		// });
 		this.messageService.add({
 			severity: "error",
 			summary: title || "Error",
@@ -126,10 +128,6 @@ export class HttpService {
 	};
 
 	showInfo = (msg: string) => {
-		// this.toastr.info(msg, "", {
-		// 	closeButton: true,
-		// 	timeOut: 3000,
-		// });
 		this.messageService.add({
 			severity: "info",
 			summary: "Info",

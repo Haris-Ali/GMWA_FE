@@ -5,6 +5,7 @@ import {
 } from "@angular/core";
 import {
 	provideRouter,
+	withComponentInputBinding,
 	withEnabledBlockingInitialNavigation,
 	withInMemoryScrolling,
 } from "@angular/router";
@@ -20,6 +21,7 @@ import { appInterceptor } from "../services/app.interceptor";
 import { GlobalErrorHandler } from "../services/globalErrorHandler";
 
 import { routes } from "./app.routes";
+import { MessageService } from "primeng/api";
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -30,7 +32,8 @@ export const appConfig: ApplicationConfig = {
 				anchorScrolling: "enabled",
 				scrollPositionRestoration: "enabled",
 			}),
-			withEnabledBlockingInitialNavigation()
+			withEnabledBlockingInitialNavigation(),
+			withComponentInputBinding()
 		),
 		provideAnimationsAsync(),
 		provideHttpClient(withFetch(), withInterceptors([appInterceptor])),
@@ -43,5 +46,6 @@ export const appConfig: ApplicationConfig = {
 			ripple: false,
 			inputStyle: "outlined",
 		}),
+		MessageService,
 	],
 };

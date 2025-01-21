@@ -1,64 +1,97 @@
 import { Routes } from '@angular/router';
 
-import { LoginGuard } from "../guards/login.guard";
-import { AuthGuard } from "../guards/auth.guard";
-
-import { LoginComponent } from "./components/auth/login/login.component";
-import { SignupComponent } from "./components/auth/signup/signup.component";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { AppLayoutComponent } from "./layout/app.layout.component";
-import { NotfoundComponent } from "./components/notfound.component";
-import { ForgotPasswordComponent } from "./components/auth/forgot-password/forgot-password.component";
-import { ConfirmationInstructionsComponent } from "./components/auth/confirmation-instructions/confirmation-instructions.component";
-import { UnlockInstructionsComponent } from "./components/auth/unlock-instructions/unlock-instructions.component";
+import { loginGuard } from "../guards/login.guard";
+import { authGuard } from "../guards/auth.guard";
 
 export const routes: Routes = [
 	{
 		path: "",
-		component: AppLayoutComponent,
+		loadComponent: () =>
+			import("./layout/app.layout.component").then(
+				(c) => c.AppLayoutComponent
+			),
 		children: [
 			{
 				title: "Dashboard",
-				path: "",
-				component: DashboardComponent,
-				// canActivate: [AuthGuard],
+				path: "dashboard",
+				loadComponent: () =>
+					import("./components/dashboard/dashboard.component").then(
+						(c) => c.DashboardComponent
+					),
+				canActivate: [() => authGuard()],
 			},
 		],
 	},
 	{
 		title: "Login",
 		path: "auth/login",
-		component: LoginComponent,
-		// canActivate: [LoginGuard],
+		loadComponent: () =>
+			import("./components/auth/login/login.component").then(
+				(c) => c.LoginComponent
+			),
+		canActivate: [() => loginGuard()],
 	},
 	{
 		title: "Signup",
 		path: "auth/signup",
-		component: SignupComponent,
-		// canActivate: [LoginGuard],
+		loadComponent: () =>
+			import("./components/auth/signup/signup.component").then(
+				(c) => c.SignupComponent
+			),
+		canActivate: [() => loginGuard()],
 	},
 	{
 		title: "Forgot Password",
 		path: "auth/forgot-password",
-		component: ForgotPasswordComponent,
-		// canActivate: [LoginGuard]
+		loadComponent: () =>
+			import(
+				"./components/auth/forgot-password/forgot-password.component"
+			).then((c) => c.ForgotPasswordComponent),
+		canActivate: [() => loginGuard()],
+	},
+	{
+		title: "Reset Password",
+		path: "auth/reset-password",
+		loadComponent: () =>
+			import(
+				"./components/auth/reset-password/reset-password.component"
+			).then((c) => c.ResetPasswordComponent),
+		canActivate: [() => loginGuard()],
 	},
 	{
 		title: "Confirmation Instructions",
 		path: "auth/confirmation",
-		component: ConfirmationInstructionsComponent,
-		// canActivate: [LoginGuard]
+		loadComponent: () =>
+			import(
+				"./components/auth/confirmation-instructions/confirmation-instructions.component"
+			).then((c) => c.ConfirmationInstructionsComponent),
+		canActivate: [() => loginGuard()],
 	},
 	{
-		title: "Unlock Instructions",
-		path: "auth/unlock",
-		component: UnlockInstructionsComponent,
-		// canActivate: [LoginGuard]
+		title: "Confirmation",
+		path: "auth/confirmation-email",
+		loadComponent: () =>
+			import(
+				"./components/auth/confirmation/confirmation.component"
+			).then((c) => c.ConfirmationComponent),
+		canActivate: [() => loginGuard()],
+	},
+	{
+		title: "Unlock",
+		path: "auth/unlock-email",
+		loadComponent: () =>
+			import("./components/auth/unlock/unlock.component").then(
+				(c) => c.UnlockComponent
+			),
+		canActivate: [() => loginGuard()],
 	},
 	{
 		title: "Not Found",
 		path: "not-found",
-		component: NotfoundComponent,
+		loadComponent: () =>
+			import("./components/notfound.component").then(
+				(c) => c.NotfoundComponent
+			),
 	},
 	{
 		path: "**",

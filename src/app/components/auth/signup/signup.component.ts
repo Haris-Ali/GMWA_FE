@@ -40,35 +40,39 @@ export class SignupComponent {
 	email: string = "";
 	password: string = "";
 	role: string = "Teacher";
-	errorMessage: string = "";
+	message: string = "";
 	loading: boolean = false;
 
 	roles: string[] = ["Teacher", "Student"];
 
+	severity: string = "error";
+
 	httpService = inject(HttpService);
 
 	signup() {
-		console.log(this.email);
-		console.log(this.password);
 		const body = {
-			avatar: this.profilePicture,
-			first_name: this.firstName,
-			middle_name: this.middleName,
-			last_name: this.lastName,
-			email: this.email,
-			password: this.password,
-			role: this.role.toLowerCase(),
+			user: {
+				avatar: this.profilePicture,
+				first_name: this.firstName.trim(),
+				middle_name: this.middleName.trim(),
+				last_name: this.lastName.trim(),
+				email: this.email.trim(),
+				password: this.password.trim(),
+				role: this.role.toLowerCase(),
+			},
 		};
 		this.loading = true;
 		this.httpService
 			.postRequest(this.globals.urls.auth.signup, body)
 			.subscribe({
-				next: (response) => {
-					console.log("Signup successful: ", response);
+				next: (response: any) => {
+					this.message = response.message;
+					this.severity = "success";
 					this.loading = false;
 				},
 				error: (error) => {
-					this.errorMessage = error.message;
+					this.message = error.message;
+					this.severity = "error";
 					this.loading = false;
 				},
 			});

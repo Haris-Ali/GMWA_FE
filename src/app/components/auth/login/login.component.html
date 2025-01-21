@@ -86,7 +86,7 @@
 						<p class="font-normal cursor-pointer text-sm border-b border-black">Didn't receive unlock instructions?</p>
 					</a>
 				</div>
-				<p-message *ngIf="errorMessage" severity="error" text="{{ errorMessage }}" class="mt-4"></p-message>
+				<p-message *ngIf="message" [severity]="severity" text="{{ message }}" class="mt-4"></p-message>
 			</form>
 		</div>
 	</div>

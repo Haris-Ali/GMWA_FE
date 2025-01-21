@@ -77,6 +77,15 @@ export const routes: Routes = [
 		canActivate: [() => loginGuard()],
 	},
 	{
+		title: "Unlock Instructions",
+		path: "auth/unlock",
+		loadComponent: () =>
+			import(
+				"./components/auth/unlock-instructions/unlock-instructions.component"
+			).then((c) => c.UnlockInstructionsComponent),
+		canActivate: [() => loginGuard()],
+	},
+	{
 		title: "Unlock",
 		path: "auth/unlock-email",
 		loadComponent: () =>

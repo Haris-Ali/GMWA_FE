@@ -11,6 +11,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { Message } from "primeng/message";
 import { SelectButton } from "primeng/selectbutton";
+import { HttpHeaders, HttpParams } from "@angular/common/http";
 
 @Component({
 	selector: "app-signup",
@@ -33,7 +34,7 @@ export class SignupComponent {
 	globals = globals;
 	fileName: string | null = null;
 	filePreview: string | null = null;
-	profilePicture: File | null = null;
+	avatar: File | null = null;
 	firstName: string = "";
 	middleName: string = "";
 	lastName: string = "";
@@ -50,20 +51,23 @@ export class SignupComponent {
 	httpService = inject(HttpService);
 
 	signup() {
-		const body = {
-			user: {
-				avatar: this.profilePicture,
-				first_name: this.firstName.trim(),
-				middle_name: this.middleName.trim(),
-				last_name: this.lastName.trim(),
-				email: this.email.trim(),
-				password: this.password.trim(),
-				role: this.role.toLowerCase(),
-			},
-		};
+		const formData = new FormData();
+		if (this.avatar) formData.append("user[avatar]", this.avatar);
+		formData.append("user[first_name]", this.firstName.trim());
+		formData.append("user[middle_name]", this.middleName.trim());
+		formData.append("user[last_name]", this.lastName.trim());
+		formData.append("user[email]", this.email.trim());
+		formData.append("user[password]", this.password.trim());
+		formData.append("user[role]", this.role.toLowerCase());
 		this.loading = true;
+
 		this.httpService
-			.postRequest(this.globals.urls.auth.signup, body)
+			.postRequest(
+				this.globals.urls.auth.signup,
+				formData,
+				undefined,
+				true
+			)
 			.subscribe({
 				next: (response: any) => {
 					this.message = response.message;
@@ -78,25 +82,19 @@ export class SignupComponent {
 			});
 	}
 
-	handleFileChange(event: Event) {
+	handleFileChange(event: any) {
 		const input = event.target as HTMLInputElement;
 		console.log(input);
 		if (input.files && input.files[0]) {
 			const file = input.files[0];
+			this.avatar = file;
 			this.fileName = file.name;
 
-			if (file.type.startsWith("image/")) {
-				const reader = new FileReader();
-				reader.onload = (e: ProgressEvent<FileReader>) => {
-					this.filePreview = e.target?.result as string;
-				};
-				reader.readAsDataURL(file);
-			} else {
-				this.filePreview = null;
-			}
-		} else {
-			this.fileName = null;
-			this.filePreview = null;
+			const reader = new FileReader();
+			reader.onload = (e: ProgressEvent<FileReader>) => {
+				this.filePreview = e.target?.result as string;
+			};
+			reader.readAsDataURL(file);
 		}
 		console.log(this.fileName);
 	}

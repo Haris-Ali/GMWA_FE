@@ -25,8 +25,6 @@ export const globals = {
 		},
 
 		registrations: {
-			cancel: baseUrl + "/users/cancel",
-			edit: baseUrl + "/users/edit",
 			toggleAccountStatus:
 				baseUrl + "/registrations/:id/toggle_account_status",
 			index: baseUrl + "/registrations",

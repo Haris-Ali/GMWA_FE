@@ -33,7 +33,7 @@ export class ConfirmationComponent {
 			if (this.confirmation_token) {
 				this.httpService
 					.getRequest(
-						`${this.globals.urls.auth.confirmation}/${this.confirmation_token}`
+						`${this.globals.urls.auth.confirmation}?confirmation_token=${this.confirmation_token}`
 					)
 					.subscribe({
 						next: (response) => {

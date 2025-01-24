@@ -149,10 +149,6 @@ export class AppLayoutComponent implements OnDestroy {
 	}
 
 	get containerClass() {
-		console.log(
-			"staticMenuDesktopInactive",
-			this.layoutService.state.staticMenuDesktopInactive
-		);
 		return {
 			"layout-theme-light":
 				this.layoutService.config().colorScheme === "light",

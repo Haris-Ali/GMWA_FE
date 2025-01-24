@@ -22,6 +22,7 @@ import { GlobalErrorHandler } from "../services/globalErrorHandler";
 
 import { routes } from "./app.routes";
 import { MessageService } from "primeng/api";
+import { LocationStrategy, PathLocationStrategy } from "@angular/common";
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -32,12 +33,13 @@ export const appConfig: ApplicationConfig = {
 				anchorScrolling: "enabled",
 				scrollPositionRestoration: "enabled",
 			}),
-			withEnabledBlockingInitialNavigation(),
+			// withEnabledBlockingInitialNavigation(),
 			withComponentInputBinding()
 		),
 		provideAnimationsAsync(),
 		provideHttpClient(withFetch(), withInterceptors([appInterceptor])),
 		{ provide: ErrorHandler, useClass: GlobalErrorHandler },
+		{ provide: LocationStrategy, useClass: PathLocationStrategy },
 		providePrimeNG({
 			theme: {
 				preset: ThemePreset,

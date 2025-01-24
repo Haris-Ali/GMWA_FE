@@ -1,0 +1,23 @@
+<div class="heading mb-4">
+	<h1 class="font-bold text-3xl">Invitations</h1>
+</div>
+<div class="bg-white rounded-border w-full p-4">
+	<div class="flex justify-between mb-4">
+		<app-search 
+			placeholder="Search by email..." 
+			(search)="onSearch($event)"
+		></app-search>
+		<p-button 
+			type="button" 
+			label="Send Invitations" 
+			icon="pi pi-plus" 
+			class="text-gray-400 rounded-md" 
+			[routerLink]="['/invitations/new']"
+		></p-button>
+	</div>
+	<app-table 
+		[cols]="tableColumns" 
+		[data]="tableData" 
+		[buttons]="buttons"
+	/>
+</div>

@@ -27,9 +27,10 @@ export class HttpService {
 	postRequest<T>(
 		endpoint: string,
 		body: any,
-		headers?: HttpHeaders
+		headers?: HttpHeaders,
+		setHeaders: boolean = false
 	): Observable<T> {
-		let httpHeaders = this.checkHeaders(headers);
+		let httpHeaders = setHeaders ? undefined : this.checkHeaders(headers);
 		return this.http
 			.post<T>(endpoint, body, { headers: httpHeaders })
 			.pipe(catchError((error) => this.handleError(error)));
@@ -74,12 +75,17 @@ export class HttpService {
 				this.handleUnauthenticated(errorMessage);
 			}
 			if (error.status === 422) {
-				let tempError = error.error.errors ? error.error.errors : error.error;
+				let tempError = error.error.errors
+					? error.error.errors
+					: error.error;
 				errorMessage = this.formatErrorMessage(tempError);
 				this.showError(errorMessage);
-			}
-			else {
-				errorMessage = `Server-side error: ${error.status} - ${error.error ? (error.error.message || error.error.error) : error.message}`;
+			} else {
+				errorMessage = `Server-side error: ${error.status} - ${
+					error.error
+						? error.error.message || error.error.error
+						: error.message
+				}`;
 				this.showError(errorMessage);
 			}
 		}
@@ -88,8 +94,8 @@ export class HttpService {
 
 	private formatErrorMessage = (errors: Record<string, string[]>) => {
 		return Object.entries(errors)
-		  .map(([field, messages]) => `${field} ${messages.join('. ')}`)
-		  .join('. ');
+			.map(([field, messages]) => `${field} ${messages.join(". ")}`)
+			.join(". ");
 	};
 
 	private checkHeaders(headers?: HttpHeaders): HttpHeaders {

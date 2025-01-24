@@ -26,9 +26,20 @@ export class AppMenuComponent implements OnInit {
 					{
 						label: "Dashboard",
 						icon: "pi pi-fw pi-home",
-						routerLink: ["/"],
+						routerLink: ["/dashboard"],
 					},
 				],
+			},
+			{
+				label: "Registrations",
+				items: [
+					{
+						label: "Registrations",
+						icon: "pi pi-fw pi-list",
+						routerLink: ["/registrations"],
+					},
+				],
+				// visible: user.role === "super_admin",
 			},
 			{
 				label: "Invitations",
@@ -36,34 +47,34 @@ export class AppMenuComponent implements OnInit {
 					{
 						label: "Invite Users",
 						icon: "pi pi-fw pi-envelope",
-						routerLink: ["/invitation/invite-user"],
+						routerLink: ["/invitations/new"],
 					},
 					{
 						label: "Invitations List",
 						icon: "pi pi-fw pi-list",
-						routerLink: ["/invitation/list"],
+						routerLink: ["/invitations"],
 					},
 				],
-				// visible: user.role === "teacher",
+				// visible: user.role === "teacher" || user.role === "super_admin",
 			},
 			{
 				label: "Classrooms",
 				items: [
 					{
-						label: "Classrooms List",
+						label: "Classrooms",
 						icon: "pi pi-fw pi-list",
-						routerLink: ["/classroom/list"],
+						routerLink: ["/classrooms"],
 					},
 					{
-						label: "New Classroom",
+						label: "Add Classroom",
 						icon: "pi pi-fw pi-folder-plus",
-						routerLink: ["/classroom/new"],
+						routerLink: ["/classrooms/add"],
 						// visible: user.role === "teacher",
 					},
 					{
 						label: "Test Classroom",
 						icon: "pi pi-fw pi-clone",
-						routerLink: ["/classroom/test"],
+						routerLink: ["/classrooms/test"],
 						// visible: user.role === "teacher",
 					},
 				],

@@ -11,7 +11,6 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { Message } from "primeng/message";
-import { Checkbox } from "primeng/checkbox";
 
 @Component({
 	selector: "app-login",
@@ -24,7 +23,6 @@ import { Checkbox } from "primeng/checkbox";
 		InputTextModule,
 		PasswordModule,
 		Message,
-		Checkbox,
 	],
 	providers: [HttpService],
 	templateUrl: "./login.component.html",

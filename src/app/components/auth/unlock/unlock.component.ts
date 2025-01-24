@@ -33,7 +33,7 @@ export class UnlockComponent {
 			if (this.unlock_token) {
 				this.httpService
 					.getRequest(
-						`${this.globals.urls.auth.unlock}/${this.unlock_token}`
+						`${this.globals.urls.auth.unlock}?unlock_token=${this.unlock_token}`
 					)
 					.subscribe({
 						next: (response) => {

@@ -57,18 +57,6 @@
 						<span *ngIf="passwordCtrl.errors?.minlength">Password must be 8 characters minimum</span>
 					</div>
 				</div>
-				<div>
-					<p-checkbox 
-						[(ngModel)]="rememberMe" 
-						[binary]="true" 
-						id="remember-me" 
-						inputId="rm"
-						class="w-full"
-						name="rememberMe"
-						[disabled]="loading"
-					/>
-					<label for="rm" class="font-bold text-base ml-2">Remember Me</label>
-				</div>
 				<div class="flex justify-between items-center">
 					<p-button type="submit" label="Login" class="text-gray-400 rounded-md" [disabled]="form.invalid || loading"></p-button>
 					<a routerLink="/auth/signup">

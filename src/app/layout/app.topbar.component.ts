@@ -1,8 +1,10 @@
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { MenuItem } from "primeng/api";
 import { LayoutService } from "./service/app.layout.service";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { HttpService } from "../../services/http.service";
+import { globals } from "../../globals";
 
 @Component({
 	selector: "app-topbar",
@@ -12,6 +14,9 @@ import { CommonModule } from "@angular/common";
 	templateUrl: "./app.topbar.component.html",
 })
 export class AppTopBarComponent {
+	httpService = inject(HttpService);
+	router = inject(Router);
+	globals = globals;
 	items!: MenuItem[];
 
 	@ViewChild("menubutton") menuButton!: ElementRef;
@@ -21,4 +26,18 @@ export class AppTopBarComponent {
 	@ViewChild("topbarmenu") menu!: ElementRef;
 
 	constructor(public layoutService: LayoutService) {}
+
+	logout() {
+		this.httpService
+			.deleteRequest(this.globals.urls.auth.logout)
+			.subscribe({
+				next: (response) => {
+					localStorage.clear();
+					this.router.navigate(["/auth/login"]);
+				},
+				error: (error) => {
+					console.log("error", error);
+				},
+			});
+	}
 }

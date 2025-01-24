@@ -31,6 +31,7 @@
 						  accept="image/*"
 						  (change)="handleFileChange($event)"
 						  [disabled]="loading"
+						  accept="image/*"
 						/>
 					
 						<span class="text-gray-500">{{ fileName || 'No file chosen' }}</span>
@@ -38,7 +39,7 @@
 					<img
 						*ngIf="filePreview"
 						[src]="filePreview"
-						class="w-32 h-32 object-cover"
+						class="w-20 h-20 object-contain"
 						alt="File preview"
 					/>
 				</div>

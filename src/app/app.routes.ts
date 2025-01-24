@@ -6,6 +6,11 @@ import { authGuard } from "../guards/auth.guard";
 export const routes: Routes = [
 	{
 		path: "",
+		redirectTo: "dashboard",
+		pathMatch: "full",
+	},
+	{
+		path: "",
 		loadComponent: () =>
 			import("./layout/app.layout.component").then(
 				(c) => c.AppLayoutComponent
@@ -18,7 +23,78 @@ export const routes: Routes = [
 					import("./components/dashboard/dashboard.component").then(
 						(c) => c.DashboardComponent
 					),
-				canActivate: [() => authGuard()],
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard"] },
+			},
+			{
+				title: "Registrations",
+				path: "registrations",
+				loadComponent: () =>
+					import("./components/registrations.component").then(
+						(c) => c.RegistrationsComponent
+					),
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard", "registrations"] },
+			},
+			{
+				title: "Invitations",
+				path: "invitations",
+				loadComponent: () =>
+					import("./components/invitations/list/list.component").then(
+						(c) => c.ListComponent
+					),
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard", "invitations"] },
+			},
+			{
+				title: "Invite Users",
+				path: "invitations/new",
+				loadComponent: () =>
+					import(
+						"./components/invitations/invite/invite.component"
+					).then((c) => c.InviteComponent),
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard", "invitations", "new"] },
+			},
+			{
+				title: "Classrooms",
+				path: "classrooms",
+				loadComponent: () =>
+					import("./components/classrooms/list/list.component").then(
+						(c) => c.ListComponent
+					),
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard", "classrooms"] },
+			},
+			{
+				title: "Add Classroom",
+				path: "classrooms/add",
+				loadComponent: () =>
+					import("./components/classrooms/add/add.component").then(
+						(c) => c.AddComponent
+					),
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard", "classrooms", "add"] },
+			},
+			{
+				title: "Update Classroom",
+				path: "classrooms/:id/update",
+				loadComponent: () =>
+					import(
+						"./components/classrooms/update/update.component"
+					).then((c) => c.UpdateComponent),
+				// canActivate: [() => authGuard()],
+				data: { breadcrumbs: ["dashboard", "classrooms", "edit"] },
+			},
+			{
+				title: "View Classroom",
+				path: "classrooms/:id/view",
+				loadComponent: () =>
+					import("./components/classrooms/view/view.component").then(
+						(c) => c.ViewComponent
+					),
+				data: { breadcrumbs: ["dashboard", "classrooms", "view"] },
+				// canActivate: [() => authGuard()],
 			},
 		],
 	},

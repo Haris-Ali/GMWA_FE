@@ -19,15 +19,15 @@ export class DashboardComponent {
 	globals = globals;
 	httpService = inject(HttpService);
 	dashboardCards: any[] = [];
-	userRole: string = "teacher";
+	userRole: keyof typeof DASHBOARD_CONFIG = "teacher";
 	userData: any = {};
 
 	ngOnInit() {
 		const storedData = localStorage.getItem("user-data");
-		const user = storedData ? JSON.parse(storedData) : null;
-		// this.userRole = user.role;
-		// this.dashboardCards = DASHBOARD_CONFIG[user.role] || DASHBOARD_CONFIG['teacher'];
-		this.dashboardCards = DASHBOARD_CONFIG["teacher"];
+		const user: User | null = storedData ? JSON.parse(storedData) : null;
+		this.userRole = user?.role ?? "teacher";
+		this.dashboardCards =
+			DASHBOARD_CONFIG[this.userRole] || DASHBOARD_CONFIG["teacher"];
 		// this.fetchStatsData();
 	}
 
@@ -44,4 +44,16 @@ export class DashboardComponent {
 				},
 			});
 	}
+}
+
+interface User {
+	id: number;
+	email: string;
+	role: "teacher" | "student" | "super_admin";
+	first_name: string;
+	middle_name: string;
+	last_name: string;
+	account_status: "active" | "inactive";
+	created_at: string;
+	updated_at: string;
 }

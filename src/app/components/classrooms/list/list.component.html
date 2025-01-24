@@ -6,7 +6,14 @@
 		<app-search placeholder="Search by name..." (search)="onSearch($event)"></app-search>
 		<p-button type="button" label="Add Classroom" icon="pi pi-plus" class="text-gray-400 rounded-md" routerLink="/classrooms/add"></p-button>
 	</div>
-	<app-table [cols]="tableColumns" [data]="tableData" [buttons]="buttons"/>
+	<app-table 
+		[cols]="tableColumns"
+		[data]="tableData"
+		[buttons]="buttons"
+		[loading]="loading"
+		[totalRecords]="totalRecords"
+		(pageChangeOutput)="onPageChange($event)"
+	/>
 </div>
 
 <p-confirmDialog></p-confirmDialog>

@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
 
 	tableColumns = [
 		{ header: "Email", field: "email" },
-		{ header: "Created At", field: "invitation_created_at", type: "date" },
+		{ header: "Created At", field: "created_at", type: "date" },
 		{ header: "Status", field: "status", type: "action" },
 	];
 
@@ -35,58 +35,56 @@ export class ListComponent implements OnInit {
 			label: "Resend Invitation",
 			severity: "primary",
 			callback: (row: Invitation) => this.resendInvitation(row),
-			condition: (row: Invitation) => row.status === "pending",
+			condition: (row: Invitation) => !row.invitation_accepted_at,
 		},
 		{
-			label: "Accepted",
+			label: "Invitation Accepted",
 			severity: "success",
 			callback: (row: Invitation) => this.viewInvitation(row),
-			condition: (row: Invitation) => row.status === "accepted",
+			condition: (row: Invitation) => row.invitation_accepted_at,
 		},
 	];
+
+	page = 1;
+	first = 0;
+	totalRecords = 0;
+	loading: boolean = false;
 
 	ngOnInit(): void {
 		this.getData();
 	}
 
 	getData(searchQuery?: string) {
-		const params = searchQuery
-			? new HttpParams().set("q[email_cont]", searchQuery)
-			: undefined;
+		let params = new HttpParams().set("page", this.page);
+		if (searchQuery) params = params.set("q[email_cont]", searchQuery);
 
 		this.httpService
-			.getRequest<Invitation[]>(
+			.getRequest<any>(
 				this.globals.urls.invitations.index,
 				params
 			)
 			.subscribe({
 				next: (data) => {
-					this.tableData = data;
+					this.tableData = data.invitations;
+					this.totalRecords = data.pagination.count;
 				},
 				error: (error) => {
 					console.error("Error fetching invitations:", error);
-					this.tableData = [
-						{
-							id: 1,
-							email: "test@test.com",
-							invitation_created_at: new Date(),
-							invitation_accepted_at: new Date(),
-							status: "accepted",
-						},
-						{
-							id: 2,
-							email: "test2@test.com",
-							invitation_created_at: new Date(),
-							invitation_accepted_at: new Date(),
-							status: "pending",
-						},
-					];
 				},
 			});
 	}
 
 	onSearch(event: string) {
+		this.page = 1;
 		this.getData(event);
+	}
+
+	onPageChange(event: any) {
+		if (this.first !== event.first) {
+			this.first = event.first;
+			this.page = Math.floor(this.first / event.rows) + 1;
+			this.getData();
+		}
 	}
 
 	resendInvitation(row: Invitation) {

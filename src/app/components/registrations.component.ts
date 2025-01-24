@@ -13,7 +13,7 @@ interface Registration {
 	email: string;
 	created_at: string;
 	role: "admin" | "teacher" | "student";
-	active: boolean;
+	account_status: "active" | "inactive";
 }
 
 @Component({
@@ -25,7 +25,7 @@ interface Registration {
 		SearchComponent,
 		ConfirmDialogModule,
 	],
-	providers: [ConfirmationService],
+	providers: [HttpService, ConfirmationService],
 	template: `
 		<div class="heading mb-4">
 			<h1 class="font-bold text-3xl">Registrations</h1>
@@ -41,6 +41,9 @@ interface Registration {
 				[cols]="tableColumns"
 				[data]="tableData"
 				[buttons]="buttons"
+				[loading]="loading"
+				[totalRecords]="totalRecords"
+				(pageChangeOutput)="onPageChange($event)"
 			/>
 		</div>
 		<p-confirmDialog></p-confirmDialog>
@@ -58,36 +61,40 @@ export class RegistrationsComponent implements OnInit {
 		{ header: "Email", field: "email" },
 		{ header: "Created At", field: "created_at", type: "date" },
 		{ header: "Role", field: "role", type: "tag" },
-		{ header: "Account Status", field: "active", type: "action" },
+		{ header: "Account Status", field: "account_status", type: "action" },
 	];
 
 	buttons = [
 		{
 			label: (data: Registration) =>
-				data.active ? "Deactivate" : "Activate",
+				data.account_status === "active" ? "Active" : "Inactive",
 			severity: (data: Registration) =>
-				data.active ? "danger" : "success",
+				data.account_status === "active" ? "success" : "danger",
 			callback: (data: Registration) => this.toggleStatus(data),
 		},
 	];
+	
+	page = 1;
+	first = 0;
+	totalRecords = 0;
+	loading: boolean = false;
 
 	ngOnInit() {
 		this.getData();
 	}
 
 	getData(searchQuery?: string) {
-		const params = searchQuery
-			? new HttpParams().set("q[email_cont]", searchQuery)
-			: undefined;
-
+		let params = new HttpParams().set("page", this.page);
+		if (searchQuery) params = params.set("q[email_cont]", searchQuery);
 		this.httpService
-			.getRequest<Registration[]>(
+			.getRequest<any>(
 				this.globals.urls.registrations.index,
 				params
 			)
 			.subscribe({
 				next: (data) => {
-					this.tableData = data;
+					this.tableData = data.registrations;
+					this.totalRecords = data.pagination.count;
 				},
 				error: (error) => {
 					console.error("Error fetching registrations:", error);
@@ -96,11 +103,20 @@ export class RegistrationsComponent implements OnInit {
 	}
 
 	onSearch(event: string) {
+		this.page = 1;
 		this.getData(event);
 	}
 
+	onPageChange(event: any) {
+		if (this.first !== event.first) {
+			this.first = event.first;
+			this.page = Math.floor(this.first / event.rows) + 1;
+			this.getData();
+		}
+	}
+
 	toggleStatus(registration: Registration) {
-		const action = registration.active ? "deactivate" : "activate";
+		const action = registration.account_status === "active" ? "deactivate" : "activate";
 
 		this.confirmationService.confirm({
 			message: `Are you sure you want to ${action} this registration?`,

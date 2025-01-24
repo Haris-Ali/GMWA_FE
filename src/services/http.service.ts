@@ -70,6 +70,7 @@ export class HttpService {
 		if (error.error instanceof ErrorEvent) {
 			errorMessage = `Client-side error: ${error.error.message}`;
 		} else {
+			console.log(error);
 			if (error.status === 401) {
 				errorMessage = "Your session has expired. Please log in again.";
 				this.handleUnauthenticated(errorMessage);
@@ -79,6 +80,9 @@ export class HttpService {
 					? error.error.errors
 					: error.error;
 				errorMessage = this.formatErrorMessage(tempError);
+				this.showError(errorMessage);
+			} else if (error.status === 403) {
+				errorMessage = error.error.error;
 				this.showError(errorMessage);
 			} else {
 				errorMessage = `Server-side error: ${error.status} - ${
@@ -92,10 +96,18 @@ export class HttpService {
 		return throwError(() => new Error(errorMessage));
 	}
 
-	private formatErrorMessage = (errors: Record<string, string[]>) => {
-		return Object.entries(errors)
-			.map(([field, messages]) => `${field} ${messages.join(". ")}`)
-			.join(". ");
+	private formatErrorMessage = (errors: any) => {
+		if (typeof errors === "string") return errors;
+		if (typeof errors === "object" && errors !== null) {
+			return Object.entries(errors)
+				.map(([field, messages]) => {
+					if (Array.isArray(messages))
+						return `${messages.join(". ")}`;
+					return `${field} ${messages}`;
+				})
+				.join(". ");
+		}
+		return "An unknown error occurred";
 	};
 
 	private checkHeaders(headers?: HttpHeaders): HttpHeaders {

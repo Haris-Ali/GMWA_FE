@@ -20,7 +20,7 @@ import { ConfirmationService } from "primeng/api";
 		Button,
 		ConfirmDialogModule,
 	],
-	providers: [ConfirmationService],
+	providers: [HttpService, ConfirmationService],
 	templateUrl: "./list.component.html",
 	styleUrl: "./list.component.scss",
 })
@@ -34,8 +34,8 @@ export class ListComponent {
 	tableColumns: TableColumns[] = [
 		{ header: "Name", field: "name" },
 		{ header: "Created At", field: "created_at", type: "date" },
-		{ header: "Enrolled Students", field: "enrolled_students" },
-		{ header: "Total Assignments", field: "assignments" },
+		{ header: "Enrolled Students", field: "enrolled_students_count" },
+		{ header: "Total Assignments", field: "assignments_count" },
 		{ header: "Actions", field: "", type: "action" },
 	];
 
@@ -59,19 +59,28 @@ export class ListComponent {
 		},
 	];
 
+	page = 1;
+	first = 0;
+	totalRecords = 0;
+	loading: boolean = false;
+
 	ngOnInit() {
 		this.getData();
 	}
 
 	getData(searchQuery?: string) {
-		const params = searchQuery
-			? new HttpParams().set("q[name_cont]", searchQuery)
-			: undefined;
+		let params = new HttpParams().set("page", this.page);
+		if (searchQuery) params = params.set("q[name_cont]", searchQuery);
+
 		this.httpService
-			.getRequest<TableData[]>(this.globals.urls.classrooms.list, params)
+			.getRequest<TableData[]>(
+				`${this.globals.urls.classrooms.list}`,
+				params
+			)
 			.subscribe({
 				next: (data: any) => {
-					this.tableData = data;
+					this.tableData = data.classrooms;
+					this.totalRecords = data.pagination.count;
 				},
 				error: (error: any) => {
 					console.error("Error fetching classroom data:", error);
@@ -80,7 +89,16 @@ export class ListComponent {
 	}
 
 	onSearch(event: any) {
+		this.page = 1;
 		this.getData(event);
+	}
+
+	onPageChange(event: any) {
+		if (this.first !== event.first) {
+			this.first = event.first;
+			this.page = Math.floor(this.first / event.rows) + 1;
+			this.getData();
+		}
 	}
 
 	viewDetails(id: number) {
@@ -107,12 +125,13 @@ export class ListComponent {
 				severity: "danger",
 			},
 			accept: () => {
+				let url = `${this.globals.urls.classrooms.delete}`;
+				url = url.replace(":id", id.toString());
 				this.httpService
-					.deleteRequest(
-						`${this.globals.urls.classrooms.delete}/${id}`
-					)
+					.deleteRequest(url)
 					.subscribe({
-						next: () => {
+						next: (response: any) => {
+							this.httpService.showSuccess(response.message, "Classroom Deleted");
 							this.getData();
 						},
 						error: (error) => {

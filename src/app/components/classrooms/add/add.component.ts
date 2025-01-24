@@ -1,5 +1,5 @@
 import { Component, inject } from "@angular/core";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 
@@ -30,23 +30,31 @@ export class AddComponent {
 	globals = globals;
 	loading: boolean = false;
 
-	name = new FormControl("", [Validators.required]);
+	addClassroomForm = new FormGroup({
+		name: new FormControl("", [Validators.required]),
+	});
 
-	addClassroom() {
+	addClassroom(addClassroomForm: FormGroup) {
+		console.log(addClassroomForm.value);
 		this.loading = true;
-		this.name.disable();
+		addClassroomForm.disable();
 		this.httpService
 			.postRequest(this.globals.urls.classrooms.create, {
-				classroom: { name: this.name.value },
+				classroom: { name: addClassroomForm.value.name },
 			})
 			.subscribe({
 				next: (response: any) => {
 					this.loading = false;
+					addClassroomForm.enable();
+					this.httpService.showSuccess(
+						response.message,
+						"Classroom Added"
+					);
 					this.router.navigate(["/classrooms"]);
 				},
 				error: (error) => {
 					this.loading = false;
-					this.name.enable();
+					addClassroomForm.enable();
 				},
 			});
 	}

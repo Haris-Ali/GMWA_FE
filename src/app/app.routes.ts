@@ -23,7 +23,7 @@ export const routes: Routes = [
 					import("./components/dashboard/dashboard.component").then(
 						(c) => c.DashboardComponent
 					),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard"] },
 			},
 			{
@@ -33,7 +33,7 @@ export const routes: Routes = [
 					import("./components/registrations.component").then(
 						(c) => c.RegistrationsComponent
 					),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard", "registrations"] },
 			},
 			{
@@ -43,7 +43,7 @@ export const routes: Routes = [
 					import("./components/invitations/list/list.component").then(
 						(c) => c.ListComponent
 					),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard", "invitations"] },
 			},
 			{
@@ -53,7 +53,7 @@ export const routes: Routes = [
 					import(
 						"./components/invitations/invite/invite.component"
 					).then((c) => c.InviteComponent),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard", "invitations", "new"] },
 			},
 			{
@@ -63,7 +63,7 @@ export const routes: Routes = [
 					import("./components/classrooms/list/list.component").then(
 						(c) => c.ListComponent
 					),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard", "classrooms"] },
 			},
 			{
@@ -73,7 +73,7 @@ export const routes: Routes = [
 					import("./components/classrooms/add/add.component").then(
 						(c) => c.AddComponent
 					),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard", "classrooms", "add"] },
 			},
 			{
@@ -83,7 +83,7 @@ export const routes: Routes = [
 					import(
 						"./components/classrooms/update/update.component"
 					).then((c) => c.UpdateComponent),
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 				data: { breadcrumbs: ["dashboard", "classrooms", "edit"] },
 			},
 			{
@@ -94,7 +94,7 @@ export const routes: Routes = [
 						(c) => c.ViewComponent
 					),
 				data: { breadcrumbs: ["dashboard", "classrooms", "view"] },
-				// canActivate: [() => authGuard()],
+				canActivate: [() => authGuard()],
 			},
 		],
 	},
@@ -167,6 +167,15 @@ export const routes: Routes = [
 		loadComponent: () =>
 			import("./components/auth/unlock/unlock.component").then(
 				(c) => c.UnlockComponent
+			),
+		canActivate: [() => loginGuard()],
+	},
+	{
+		title: "Accept Invitation",
+		path: "invitations/accept",
+		loadComponent: () =>
+			import("./components/invitations/accept/accept.component").then(
+				(c) => c.AcceptComponent
 			),
 		canActivate: [() => loginGuard()],
 	},

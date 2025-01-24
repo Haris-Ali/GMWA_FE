@@ -124,11 +124,14 @@ export class InviteComponent {
 			return;
 		}
 
+		const body = {
+			user: {
+				email: emails.join(","),
+				role: this.inviteForm.getRawValue().role,
+			},
+		};
 		this.httpService
-			.postRequest(this.globals.urls.invitations.new, {
-				emails,
-				role: this.inviteForm.value.role,
-			})
+			.postRequest(this.globals.urls.invitations.new, body)
 			.subscribe({
 				next: () => {
 					this.loading = false;

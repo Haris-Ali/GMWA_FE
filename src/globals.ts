@@ -32,8 +32,9 @@ export const globals = {
 
 		invitations: {
 			accept: baseUrl + "/users/invitation/accept",
+			setupAccount: baseUrl + "/users/invitation",
 			remove: baseUrl + "/users/invitation/remove",
-			new: baseUrl + "/users/invitation/new",
+			new: baseUrl + "/users/invitation",
 			resend: baseUrl + "/invitations/:id/resend",
 			index: baseUrl + "/invitations",
 		},

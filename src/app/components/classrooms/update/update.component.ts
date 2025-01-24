@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit } from "@angular/core";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 
@@ -19,6 +19,7 @@ import { Button } from "primeng/button";
 		InputTextModule,
 		Button,
 	],
+	providers: [HttpService],
 	templateUrl: "./update.component.html",
 	styleUrl: "./update.component.scss",
 })
@@ -31,22 +32,26 @@ export class UpdateComponent implements OnInit {
 	loading: boolean = false;
 	id = input.required<number>();
 
-	name = new FormControl("", [Validators.required]);
+	updateClassroomForm = new FormGroup({
+		name: new FormControl("", [Validators.required]),
+	});
 
 	ngOnInit() {
 		console.log(this.id());
-		// this.classroomId = Number(this.route.snapshot.paramMap.get('id'));
 		this.getClassroomDetails();
 	}
 
 	getClassroomDetails() {
 		this.loading = true;
-		this.name.disable();
+		let url = `${this.globals.urls.classrooms.show}`;
+		url = url.replace(":id", this.id().toString());
 		this.httpService
-			.getRequest(`${this.globals.urls.classrooms.show}/${this.id}`)
+			.getRequest(url)
 			.subscribe({
 				next: (response: any) => {
-					this.name.setValue(response.name);
+					this.updateClassroomForm.setValue({
+						name: response.classroom.name,
+					});
 					this.loading = false;
 				},
 				error: (error) => {
@@ -57,22 +62,26 @@ export class UpdateComponent implements OnInit {
 	}
 
 	updateClassroom() {
-		if (this.name.invalid) return;
+		if (this.updateClassroomForm.invalid) return;
 
 		this.loading = true;
-		this.name.disable();
+		this.updateClassroomForm.disable();
+		let url = `${this.globals.urls.classrooms.update}`;
+		url = url.replace(":id", this.id().toString());
 		this.httpService
-			.putRequest(`${this.globals.urls.classrooms.update}/${this.id}`, {
-				classroom: { name: this.name.value },
+			.putRequest(url, {
+				classroom: { name: this.updateClassroomForm.value.name },
 			})
 			.subscribe({
-				next: () => {
+				next: (response: any) => {
+					console.log(response);
+					this.httpService.showSuccess(response.message, "Classroom Updated");
 					this.loading = false;
 					this.router.navigate(["/classrooms"]);
 				},
 				error: () => {
 					this.loading = false;
-					this.name.enable();
+					this.updateClassroomForm.enable();
 				},
 			});
 	}

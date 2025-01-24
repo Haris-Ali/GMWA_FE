@@ -19,5 +19,8 @@
 		[cols]="tableColumns" 
 		[data]="tableData" 
 		[buttons]="buttons"
+		[loading]="loading"
+		[totalRecords]="totalRecords"
+		(pageChangeOutput)="onPageChange($event)"
 	/>
 </div>

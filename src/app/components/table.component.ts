@@ -1,4 +1,4 @@
-import { Component, input } from "@angular/core";
+import { Component, input, output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { Button } from "primeng/button";
@@ -14,6 +14,10 @@ import { Tag } from "primeng/tag";
 			[value]="data()"
 			[paginator]="true"
 			[rows]="10"
+			[loading]="loading()"
+            (onPage)="pageChange($event)"
+            [totalRecords]="totalRecords()"
+            [lazy]="true"
 		>
 			<ng-template pTemplate="header" let-columns>
 				<tr>
@@ -89,6 +93,10 @@ export class TableComponent {
 	cols = input.required<any[]>();
 	data = input.required<any[]>();
 	buttons = input.required<any[]>();
+	loading = input.required<boolean>();
+    totalRecords = input.required<number>();
+
+	pageChangeOutput = output<any>();
 
 	getButtonLabel(button: any, rowData: any): string {
 		return typeof button.label === "function"
@@ -100,5 +108,9 @@ export class TableComponent {
 		return typeof button.severity === "function"
 			? button.severity(rowData)
 			: button.severity;
+	}
+
+	pageChange(event: any) {
+		this.pageChangeOutput.emit(event);
 	}
 }

@@ -28,20 +28,23 @@ export class ViewComponent implements OnInit {
 
 	getClassroomDetails() {
 		this.loading = true;
-		this.httpService
-			.getRequest<ClassroomDetails>(
-				`${this.globals.urls.classrooms.show}/${this.id()}`
-			)
-			.subscribe({
-				next: (response) => {
-					this.classroom = response;
-					this.loading = false;
-				},
-				error: (error) => {
-					this.loading = false;
-					this.router.navigate(["/classrooms"]);
-				},
-			});
+		let url = `${this.globals.urls.classrooms.show}`;
+		url = url.replace(":id", this.id().toString());
+		this.httpService.getRequest<any>(url).subscribe({
+			next: (response) => {
+				this.classroom = {
+					...response.classroom,
+					teacher_name: response.teacher_name,
+					enrolled_students: response.enrolled_students,
+					assignments: response.assignments,
+				};
+				this.loading = false;
+			},
+			error: (error) => {
+				this.loading = false;
+				this.router.navigate(["/classrooms"]);
+			},
+		});
 	}
 
 	viewStudents() {

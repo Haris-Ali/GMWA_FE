@@ -77,7 +77,7 @@ export const globals = {
 			classroomAssignments:
 				baseUrl + "/classrooms/:classroom_id/assignments",
 			newClassroomAssignment:
-				baseUrl + "/classrooms/:classroom_id/assignments/new",
+				baseUrl + "/classrooms/:classroom_id/assignments",
 			edit: baseUrl + "/assignments/:id/edit",
 			show: baseUrl + "/assignments/:id",
 			update: baseUrl + "/assignments/:id",
@@ -89,6 +89,18 @@ export const globals = {
 			calculateMarks:
 				baseUrl + "/assignments/:id/calculate_student_marks",
 			toggleStatus: baseUrl + "/assignments/:id/toggle_status",
+			list: baseUrl + "/assignments/all",
+			endSubmissions:
+				baseUrl + "/assignments/:id/milestones/end_submissions",
+		},
+
+		milestones: {
+			list: baseUrl + "/assignments/:id/milestones",
+			create: baseUrl + "/assignments/:id/milestones",
+			update: baseUrl + "/milestones/:id",
+			delete: baseUrl + "/milestones/:id",
+			show: baseUrl + "/milestones/:id",
 		},
 	},
 };
+

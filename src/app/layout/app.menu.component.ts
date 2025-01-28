@@ -61,7 +61,7 @@ export class AppMenuComponent implements OnInit {
 				label: "Classrooms",
 				items: [
 					{
-						label: "Classrooms",
+						label: "My Classrooms",
 						icon: "pi pi-fw pi-list",
 						routerLink: ["/classrooms"],
 					},
@@ -74,23 +74,7 @@ export class AppMenuComponent implements OnInit {
 					{
 						label: "Test Classroom",
 						icon: "pi pi-fw pi-clone",
-						routerLink: ["/classrooms/test"],
-						visible: user.role === "teacher",
-					},
-				],
-			},
-			{
-				label: "Assignments",
-				items: [
-					{
-						label: "Assignments List",
-						icon: "pi pi-fw pi-file",
-						routerLink: ["/assignments"],
-					},
-					{
-						label: "Add Assignment",
-						icon: "pi pi-fw pi-file-plus",
-						routerLink: ["/assignments/add"],
+						routerLink: ["/classrooms/1"],
 						visible: user.role === "teacher",
 					},
 				],

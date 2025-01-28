@@ -4,11 +4,11 @@
         <app-sidebar></app-sidebar>
     </div>
     <div class="layout-main-container">
-		<!-- <app-breadcrumb/> -->
+		<app-breadcrumb/>
         <div class="layout-main">
             <router-outlet></router-outlet>
         </div>
 		<app-footer></app-footer>
     </div>
-    <div class="layout-mask"></div>
+    <div class="layout-mask" (click)="layoutService.hideMenu()" *ngIf="layoutService.state$().overlayMenuActive || layoutService.state$().profileSidebarVisible"></div>
 </div>

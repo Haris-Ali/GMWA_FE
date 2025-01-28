@@ -72,7 +72,6 @@ export class LayoutService {
 	}
 
 	onMenuToggle() {
-		console.log("state before", this.state);
 		if (this.isOverlay()) {
 			this.state.overlayMenuActive = !this.state.overlayMenuActive;
 			if (this.state.overlayMenuActive) {
@@ -87,18 +86,30 @@ export class LayoutService {
 			this.state.staticMenuMobileActive =
 				!this.state.staticMenuMobileActive;
 
+			this.state.overlayMenuActive = this.state.staticMenuMobileActive;
 			if (this.state.staticMenuMobileActive) {
 				this.overlayOpen.next(null);
 			}
 		}
-		console.log("state after", this.state);
+		this.state.profileSidebarVisible = false;
+		this.state$.set({ ...this.state });
+	}
+
+	hideMenu() {
+		this.state.overlayMenuActive = false;
+		this.state.staticMenuMobileActive = false;
+		this.state.profileSidebarVisible = false;
+		this.state$.set({ ...this.state });
 	}
 
 	showProfileSidebar() {
+		this.state.overlayMenuActive = false;
+		this.state.staticMenuMobileActive = false;
 		this.state.profileSidebarVisible = !this.state.profileSidebarVisible;
 		if (this.state.profileSidebarVisible) {
 			this.overlayOpen.next(null);
 		}
+		this.state$.set({ ...this.state });
 	}
 
 	showConfigSidebar() {

@@ -43,9 +43,9 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 	styles: `
 		.breadcrumb-container {
 			background: var(--surface-overlay);
-			padding: 1rem;
+			padding: .5rem;
 			border-radius: var(--content-border-radius);
-			margin-bottom: .5rem;
+			margin-bottom: 1rem;
 		}
 
 		.breadcrumb {
@@ -93,12 +93,26 @@ export class AppBreadCrumbComponent implements OnInit {
 				child.snapshot.data["breadcrumbs"];
 			if (labels) {
 				labels.forEach((label, index) => {
-					const breadcrumbURL = url
+					let breadcrumbURL = url
 						.split("/")
 						.slice(0, index + 1)
 						.join("/");
+
+					let displayLabel = label;
+					if (typeof label === "object") {
+						const labelText = (label as { text: string }).text;
+						if (labelText.startsWith(":")) {
+							const paramName = labelText.substring(1);
+							
+							displayLabel =
+								child.snapshot.params[paramName] || label;
+						}
+					}
 					if (!breadcrumbs.find((bc) => bc.url === breadcrumbURL)) {
-						breadcrumbs.push({ label, url: breadcrumbURL });
+						breadcrumbs.push({
+							label: displayLabel,
+							url: breadcrumbURL,
+						});
 					}
 				});
 			}

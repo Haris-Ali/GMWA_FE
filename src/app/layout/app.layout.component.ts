@@ -6,6 +6,7 @@ import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppTopBarComponent } from "./app.topbar.component";
 import { AppFooterComponent } from "./app.footer.component";
 import { CommonModule } from "@angular/common";
+import { AppBreadCrumbComponent } from "./app.breadcrumb.component";
 
 @Component({
 	selector: "app-layout",
@@ -16,6 +17,7 @@ import { CommonModule } from "@angular/common";
 		AppSidebarComponent,
 		AppTopBarComponent,
 		AppFooterComponent,
+		AppBreadCrumbComponent,
 	],
 	providers: [LayoutService],
 	templateUrl: "./app.layout.component.html",

@@ -1,0 +1,38 @@
+<div class="heading mb-4">
+	<h6 class="font-bold text-xl">Assignment Milestones</h6>
+</div>
+<div class="bg-white rounded-border w-full">
+	<div class="flex justify-between mb-4 md:flex-row flex-col gap-2">
+		<app-search
+			placeholder="Search milestones..."
+			(search)="onSearch($event)"
+		></app-search>
+		<div class="flex gap-2">
+			<p-button
+				type="button"
+				severity="danger"
+				label="End Submissions"
+				icon="pi pi-ban"
+				(onClick)="endSubmissions()"
+				*ngIf="assignmentStatus !== 'draft'"
+			></p-button>
+			<p-button
+				type="button"
+				label="Add Milestone"
+				icon="pi pi-plus"
+				(onClick)="addMilestone()"
+				*ngIf="assignmentEvaluationMethod !== 'Q'"
+			></p-button>
+		</div>
+	</div>
+	<app-table
+		[cols]="tableColumns"
+		[data]="tableData"
+		[buttons]="buttons"
+		[loading]="loading"
+		[totalRecords]="totalRecords"
+		[rows]="5"
+		(pageChangeOutput)="onPageChange($event)"
+	/>
+</div>
+<p-confirmDialog></p-confirmDialog>

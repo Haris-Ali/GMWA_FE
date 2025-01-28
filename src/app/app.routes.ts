@@ -47,7 +47,7 @@ export const routes: Routes = [
 				data: { breadcrumbs: ["dashboard", "invitations"] },
 			},
 			{
-				title: "Invite Users",
+				title: "Invitations | Invite Users",
 				path: "invitations/new",
 				loadComponent: () =>
 					import(
@@ -67,7 +67,7 @@ export const routes: Routes = [
 				data: { breadcrumbs: ["dashboard", "classrooms"] },
 			},
 			{
-				title: "Add Classroom",
+				title: "Classroom | Add",
 				path: "classrooms/add",
 				loadComponent: () =>
 					import("./components/classrooms/add/add.component").then(
@@ -77,7 +77,7 @@ export const routes: Routes = [
 				data: { breadcrumbs: ["dashboard", "classrooms", "add"] },
 			},
 			{
-				title: "Update Classroom",
+				title: "Classroom | Update",
 				path: "classrooms/:id/update",
 				loadComponent: () =>
 					import(
@@ -87,14 +87,120 @@ export const routes: Routes = [
 				data: { breadcrumbs: ["dashboard", "classrooms", "edit"] },
 			},
 			{
-				title: "View Classroom",
-				path: "classrooms/:id/view",
+				title: "Classroom | View",
+				path: "classrooms/:id",
 				loadComponent: () =>
 					import("./components/classrooms/view/view.component").then(
 						(c) => c.ViewComponent
 					),
 				data: { breadcrumbs: ["dashboard", "classrooms", "view"] },
 				canActivate: [() => authGuard()],
+			},
+			{
+				title: "Classroom | Enroll Students",
+				path: "classrooms/:id/enrolled-students/add",
+				loadComponent: () =>
+					import("./components/enrollments/add/add.component").then(
+						(c) => c.EnrollmentsAddComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":id", dynamic: true },
+						"enroll",
+					],
+				},
+			},
+			{
+				title: "Classroom | Add Assignment",
+				path: "classrooms/:classroomId/assignments/add",
+				loadComponent: () =>
+					import("./components/assignments/add/add.component").then(
+						(c) => c.AddComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"add assignment",
+					],
+				},
+			},
+			{
+				title: "Classroom | Update Assignment",
+				path: "classrooms/:classroomId/assignments/:assignmentId/update",
+				loadComponent: () =>
+					import(
+						"./components/assignments/update/update.component"
+					).then((c) => c.UpdateComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"update assignment",
+					],
+				},
+			},
+			{
+				title: "Classroom | View Assignment",
+				path: "classrooms/:classroomId/assignments/:assignmentId",
+				loadComponent: () =>
+					import("./components/assignments/view/view.component").then(
+						(c) => c.ViewComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"view assignment",
+					],
+				},
+			},
+			{
+				title: "Classroom | Add Milestone",
+				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/add",
+				loadComponent: () =>
+					import("./components/milestones/add/add.component").then(
+						(c) => c.AddComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"add milestones",
+					],
+				},
+			},
+			{
+				title: "Classroom | Update Milestone",
+				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/update",
+				loadComponent: () =>
+					import(
+						"./components/milestones/update/update.component"
+					).then((c) => c.UpdateComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"update milestone",
+					],
+				},
 			},
 		],
 	},

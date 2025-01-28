@@ -10,7 +10,7 @@ import { globals } from "../../globals";
 	selector: "app-topbar",
 	standalone: true,
 	imports: [RouterModule, CommonModule],
-	providers: [LayoutService],
+	// providers: [LayoutService],
 	templateUrl: "./app.topbar.component.html",
 })
 export class AppTopBarComponent {

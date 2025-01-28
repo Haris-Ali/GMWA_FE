@@ -102,7 +102,7 @@ export class ListComponent {
 	}
 
 	viewDetails(id: number) {
-		this.router.navigate([`/classrooms/${id}/view`]);
+		this.router.navigate([`/classrooms/${id}`]);
 	}
 
 	editDetails(id: number) {

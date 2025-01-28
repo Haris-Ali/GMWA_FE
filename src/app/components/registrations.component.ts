@@ -31,7 +31,9 @@ interface Registration {
 			<h1 class="font-bold text-3xl">Registrations</h1>
 		</div>
 		<div class="bg-white rounded-border w-full p-4">
-			<div class="flex justify-between mb-4">
+			<div
+				class="flex justify-between mb-4 md:flex-row md:gap-0 flex-col gap-2"
+			>
 				<app-search
 					placeholder="Search by email..."
 					(search)="onSearch($event)"
@@ -73,7 +75,7 @@ export class RegistrationsComponent implements OnInit {
 			callback: (data: Registration) => this.toggleStatus(data),
 		},
 	];
-	
+
 	page = 1;
 	first = 0;
 	totalRecords = 0;
@@ -87,10 +89,7 @@ export class RegistrationsComponent implements OnInit {
 		let params = new HttpParams().set("page", this.page);
 		if (searchQuery) params = params.set("q[email_cont]", searchQuery);
 		this.httpService
-			.getRequest<any>(
-				this.globals.urls.registrations.index,
-				params
-			)
+			.getRequest<any>(this.globals.urls.registrations.index, params)
 			.subscribe({
 				next: (data) => {
 					this.tableData = data.registrations;
@@ -116,7 +115,10 @@ export class RegistrationsComponent implements OnInit {
 	}
 
 	toggleStatus(registration: Registration) {
-		const action = registration.account_status === "active" ? "deactivate" : "activate";
+		const action =
+			registration.account_status === "active"
+				? "deactivate"
+				: "activate";
 
 		this.confirmationService.confirm({
 			message: `Are you sure you want to ${action} this registration?`,

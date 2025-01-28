@@ -3,21 +3,22 @@ import { CommonModule } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { Button } from "primeng/button";
 import { Tag } from "primeng/tag";
+import { ObjectPropertyTablePipe } from "../../pipes/object-property-table.pipe";
 
 @Component({
 	selector: "app-table",
 	standalone: true,
-	imports: [CommonModule, TableModule, Button, Tag],
+	imports: [CommonModule, TableModule, Button, Tag, ObjectPropertyTablePipe],
 	template: `
 		<p-table
 			[columns]="cols()"
 			[value]="data()"
 			[paginator]="true"
-			[rows]="10"
+			[rows]="rows() || 10"
 			[loading]="loading()"
-            (onPage)="pageChange($event)"
-            [totalRecords]="totalRecords()"
-            [lazy]="true"
+			(onPage)="pageChange($event)"
+			[totalRecords]="totalRecords()"
+			[lazy]="true"
 		>
 			<ng-template pTemplate="header" let-columns>
 				<tr>
@@ -62,14 +63,11 @@ import { Tag } from "primeng/tag";
 							</ng-container>
 
 							<ng-container *ngSwitchCase="'date'">
-								{{
-									rowData[col.field]
-										| date : "dd/MM/yyyy hh:mm a"
-								}}
+								{{ rowData[col.field] | date : "dd/MM/yyyy" }}
 							</ng-container>
 
 							<ng-container *ngSwitchDefault>
-								{{ rowData[col.field] }}
+								{{ rowData | objectPropertyTable : col.field }}
 							</ng-container>
 						</ng-container>
 					</td>
@@ -94,7 +92,8 @@ export class TableComponent {
 	data = input.required<any[]>();
 	buttons = input.required<any[]>();
 	loading = input.required<boolean>();
-    totalRecords = input.required<number>();
+	totalRecords = input.required<number>();
+	rows = input<number>();
 
 	pageChangeOutput = output<any>();
 

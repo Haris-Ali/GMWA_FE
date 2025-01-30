@@ -1,18 +1,18 @@
 import { Component, inject, input } from "@angular/core";
+import { Router, RouterModule } from "@angular/router";
 import { globals } from "../../../../globals";
 import { HttpService } from "../../../../services/http.service";
-import { Router, RouterModule } from "@angular/router";
-import { HttpParams } from "@angular/common/http";
 import { CommonModule } from "@angular/common";
 import { ConfirmationService } from "primeng/api";
 import { Button } from "primeng/button";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { SearchComponent } from "../../search.component";
 import { TableComponent } from "../../table.component";
-import { UserService } from "../../../../services/user.service";
+import { HttpParams } from "@angular/common/http";
+import { EvaluationCriteria } from "../evaluationCriteria.type";
 
 @Component({
-	selector: "app-groups-list",
+	selector: "app-list",
 	standalone: true,
 	imports: [
 		CommonModule,
@@ -26,42 +26,45 @@ import { UserService } from "../../../../services/user.service";
 	templateUrl: "./list.component.html",
 	styleUrl: "./list.component.scss",
 })
-export class GroupsListComponent {
+export class ListComponent {
 	private httpService = inject(HttpService);
 	private router = inject(Router);
 	private confirmationService = inject(ConfirmationService);
-	private userService = inject(UserService);
-
-	assignmentId = input.required<number>();
-	classroomId = input.required<number>();
-	assignmentEvaluationMethod: string = "";
-	assignmentStatus: string = "";
 
 	globals = globals;
 
+	milestoneId = input.required<number>();
+	assignmentId = input.required<number>();
+	classroomId = input.required<number>();
+
 	tableColumns: any[] = [
 		{ header: "Name", field: "name" },
-		{ header: "Marks", field: "marks" },
+		{ header: "Min Value", field: "min_value" },
+		{ header: "Max Value", field: "max_value" },
+		{ header: "Weightage", field: "weightage" },
+		{ header: "Created At", field: "created_at", type: "date" },
+		{ header: "Updated At", field: "updated_at", type: "date" },
 		{ header: "Actions", field: "", type: "action" },
 	];
 
-	tableData: any[] = [];
+	tableData: EvaluationCriteria[] = [];
 
-	buttons = [
+	buttons: any[] = [
 		{
 			label: "View",
 			severity: "primary",
-			callback: (data: any) => this.viewDetails(data.id),
+			callback: (data: EvaluationCriteria) => this.viewDetails(data.id),
 		},
 		{
 			label: "Edit",
 			severity: "secondary",
-			callback: (data: any) => this.editDetails(data.id),
+			callback: (data: EvaluationCriteria) => this.editDetails(data.id),
 		},
 		{
 			label: "Delete",
 			severity: "danger",
-			callback: (data: any) => this.deleteGroup(data.id),
+			callback: (data: EvaluationCriteria) =>
+				this.deleteEvaluationCriteria(data.id),
 		},
 	];
 
@@ -78,12 +81,21 @@ export class GroupsListComponent {
 		let params = new HttpParams().set("page", this.page);
 		if (searchQuery) params = params.set("q[name_cont]", searchQuery);
 
-		let url = `${this.globals.urls.groups.list}`;
-		url = url.replace(":id", this.assignmentId().toString());
+		const url = this.globals.urls.evaluation_criteria.list.replace(
+			":milestone_id",
+			this.milestoneId().toString()
+		);
 		this.httpService.getRequest(url, params).subscribe({
 			next: (response: any) => {
-				this.tableData = response.groups;
+				this.loading = false;
+				this.tableData = response.evaluation_criteria;
 				this.totalRecords = response.pagination.count;
+			},
+			error: () => {
+				this.loading = false;
+				this.router.navigate([
+					`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/milestones/${this.milestoneId()}`,
+				]);
 			},
 		});
 	}
@@ -101,52 +113,55 @@ export class GroupsListComponent {
 		}
 	}
 
-	addGroup() {
+	addEvaluationCriteria() {
 		this.router.navigate([
-			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/groups/add`,
+			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/milestones/${this.milestoneId()}/evaluation_criteria/add`,
 		]);
 	}
 
 	viewDetails(id: number) {
 		this.router.navigate([
-			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/groups/${id}`,
+			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/milestones/${this.milestoneId()}/evaluation_criteria/${id}`,
 		]);
 	}
 
 	editDetails(id: number) {
 		this.router.navigate([
-			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/groups/${id}/update`,
+			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/milestones/${this.milestoneId()}/evaluation_criteria/${id}/update`,
 		]);
 	}
 
-	deleteGroup(id: number) {
+	deleteEvaluationCriteria(id: number) {
 		this.confirmationService.confirm({
-			message: `Are you sure you want to delete this group?`,
-			header: "Delete Group",
+			message: `Are you sure you want to delete this evaluation criteria?`,
+			header: "Delete Evaluation Criteria",
 			icon: "pi pi-exclamation-triangle",
-			rejectLabel: "No, do not delete group",
+			rejectLabel: "No, do not delete",
 			rejectButtonProps: {
 				label: "Cancel",
 				severity: "secondary",
 				outlined: true,
 			},
 			acceptButtonProps: {
-				label: "Yes, delete group",
+				label: "Yes, delete evaluation criteria",
 				severity: "danger",
 			},
 			accept: () => {
-				let url = `${this.globals.urls.groups.delete}`;
+				let url = `${this.globals.urls.evaluation_criteria.delete}`;
 				url = url.replace(":id", id.toString());
 				this.httpService.deleteRequest(url).subscribe({
 					next: (response: any) => {
 						this.httpService.showSuccess(
 							response.message,
-							"Group Deleted"
+							"Evaluation Criteria Deleted"
 						);
 						this.getData();
 					},
 					error: (error) => {
-						console.error("Error deleting group:", error);
+						console.error(
+							"Error deleting evaluation criteria:",
+							error
+						);
 					},
 				});
 			},

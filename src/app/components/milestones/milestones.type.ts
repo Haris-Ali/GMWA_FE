@@ -8,6 +8,7 @@ type Milestone = {
 	created_at: string;
 	updated_at: string;
 	can_perform_evaluation: boolean;
+	can_manage_criteria: boolean;
 };
 
 export { Milestone };

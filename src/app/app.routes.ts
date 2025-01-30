@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
 import { loginGuard } from "../guards/login.guard";
 import { authGuard } from "../guards/auth.guard";
@@ -114,6 +114,24 @@ export const routes: Routes = [
 				},
 			},
 			{
+				title: "Classroom | Self Enroll",
+				path: "classrooms/:id/self-enroll",
+				loadComponent: () =>
+					import(
+						"./components/enrollments/self-enroll/self-enroll.component"
+					).then((c) => c.SelfEnrollComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":id", dynamic: true },
+						"self enroll",
+					],
+					roles: ["student"],
+				},
+			},
+			{
 				title: "Classroom | Add Assignment",
 				path: "classrooms/:classroomId/assignments/add",
 				loadComponent: () =>
@@ -165,7 +183,7 @@ export const routes: Routes = [
 				},
 			},
 			{
-				title: "Classroom | Add Milestone",
+				title: "Assignment | Add Milestone",
 				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/add",
 				loadComponent: () =>
 					import("./components/milestones/add/add.component").then(
@@ -184,7 +202,7 @@ export const routes: Routes = [
 				},
 			},
 			{
-				title: "Classroom | Update Milestone",
+				title: "Assignment | Update Milestone",
 				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/update",
 				loadComponent: () =>
 					import(
@@ -199,6 +217,127 @@ export const routes: Routes = [
 						"assignments",
 						{ text: ":assignmentId", dynamic: true },
 						"update milestone",
+					],
+				},
+			},
+			{
+				title: "Assignment | Add Group",
+				path: "classrooms/:classroomId/assignments/:assignmentId/groups/add",
+				loadComponent: () =>
+					import("./components/groups/add/add.component").then(
+						(c) => c.AddComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"add group",
+					],
+				},
+			},
+			{
+				title: "Assignment | View Group",
+				path: "classrooms/:classroomId/assignments/:assignmentId/groups/:groupId",
+				loadComponent: () =>
+					import("./components/groups/view/view.component").then(
+						(c) => c.ViewComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"view group",
+					],
+				},
+			},
+			{
+				title: "Assignment | Update Group",
+				path: "classrooms/:classroomId/assignments/:assignmentId/groups/:groupId/update",
+				loadComponent: () =>
+					import("./components/groups/update/update.component").then(
+						(c) => c.UpdateComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"update group",
+					],
+				},
+			},
+			{
+				title: "Milestone | Evaluation Criteria",
+				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/evaluation_criteria",
+				loadComponent: () =>
+					import(
+						"./components/evaluation_criteria/list/list.component"
+					).then((c) => c.ListComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"milestones",
+						{ text: ":milestoneId", dynamic: true },
+						"evaluation criteria",
+					],
+				},
+			},
+			{
+				title: "Milestone | Add Evaluation Criteria",
+				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/evaluation_criteria/add",
+				loadComponent: () =>
+					import(
+						"./components/evaluation_criteria/add/add.component"
+					).then((c) => c.AddComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"milestones",
+						{ text: ":milestoneId", dynamic: true },
+						"add evaluation criteria",
+					],
+				},
+			},
+			{
+				title: "Milestone | Update Evaluation Criteria",
+				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/evaluation_criteria/:evaluationCriteriaId/update",
+				loadComponent: () =>
+					import(
+						"./components/evaluation_criteria/update/update.component"
+					).then((c) => c.UpdateComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"milestones",
+						{ text: ":milestoneId", dynamic: true },
+						"evaluation_criteria",
+						{ text: ":evaluationCriteriaId", dynamic: true },
 					],
 				},
 			},

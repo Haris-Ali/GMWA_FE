@@ -1,1 +1,192 @@
-<p>update works!</p>
+<div class="heading mb-4">
+	<h6 class="font-bold text-3xl">Update Group</h6>
+</div>
+<div class="bg-white rounded-border w-full p-4">
+	<form
+		*ngIf="groupForm"
+		[formGroup]="groupForm"
+		(ngSubmit)="onSubmit()"
+		class="flex flex-col gap-4"
+	>
+		<div class="flex flex-col gap-2">
+			<label for="name" class="font-bold">
+				Name
+				<span class="text-red-600">*</span>
+			</label>
+			<input
+				id="name"
+				type="text"
+				pInputText
+				formControlName="name"
+				class="w-full md:w-72 lg:w-96"
+				placeholder="Enter group name"
+			/>
+			<div
+				class="text-red-600 mt-2"
+				*ngIf="
+					groupForm.get('name')?.invalid &&
+					groupForm.get('name')?.touched
+				"
+			>
+				Name is required
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<label for="marks" class="font-bold">
+				Marks (out of {{ assignment?.total_marks }})
+				<span class="text-red-600">*</span>
+			</label>
+			<p-inputNumber
+				id="marks"
+				formControlName="marks"
+				class="w-full md:w-72 lg:w-96"
+			></p-inputNumber>
+			<div
+				class="text-red-600 mt-2"
+				*ngIf="
+					groupForm.get('marks')?.invalid &&
+					groupForm.get('marks')?.touched
+				"
+			>
+				<span *ngIf="groupForm.get('marks')?.errors?.['required']">
+					Marks is required
+				</span>
+				<span *ngIf="groupForm.get('marks')?.errors?.['min']">
+					Marks must be positive
+				</span>
+				<span *ngIf="groupForm.get('marks')?.errors?.['max']">
+					Marks must be less than or equal to
+					{{ assignment?.total_marks }}
+				</span>
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<label for="students" class="font-bold">
+				Students
+				<span class="text-red-600">*</span>
+			</label>
+			<p-multiselect
+				formControlName="enrollment_ids"
+				[options]="enrolledStudents"
+				optionLabel="student_name"
+				optionValue="id"
+				placeholder="Select students"
+				class="w-full md:w-72 lg:w-96"
+			/>
+			<div
+				class="text-red-600 mt-2"
+				*ngIf="
+					groupForm.get('enrollment_ids')?.invalid &&
+					groupForm.get('enrollment_ids')?.touched
+				"
+			>
+				Select at least one student
+			</div>
+		</div>
+
+		<div formGroupName="setting" class="flex flex-col gap-2">
+			<ng-container
+				*ngFor="let field of getSettingsControls() | keyvalue"
+			>
+				<div class="flex flex-col gap-2">
+					<label [for]="field.key" class="font-bold">
+						{{ field.key | snakeToSpace | titlecase }}
+						<span
+							class="text-red-600"
+							*ngIf="
+								groupForm
+									.get('setting')
+									?.get(field.key)
+									?.hasValidator(Validators.required)
+							"
+						>
+							*
+						</span>
+					</label>
+
+					<ng-container
+						*ngIf="getFieldConfig(field.key)?.type === 'double'"
+					>
+						<p-inputNumber
+							[id]="field.key"
+							[formControlName]="field.key"
+							[minFractionDigits]="0"
+							[maxFractionDigits]="2"
+							[min]="getFieldConfig(field.key)?.min"
+							[max]="getFieldConfig(field.key)?.max"
+							[step]="0.01"
+							class="w-full md:w-72 lg:w-96"
+						></p-inputNumber>
+					</ng-container>
+
+					<ng-container
+						*ngIf="getFieldConfig(field.key)?.type === 'boolean'"
+					>
+						<p-checkbox
+							[id]="field.key"
+							[formControlName]="field.key"
+							[binary]="true"
+						></p-checkbox>
+					</ng-container>
+
+					<ng-container
+						*ngIf="getFieldConfig(field.key)?.type === 'selection'"
+					>
+						<p-select
+							[id]="field.key"
+							[formControlName]="field.key"
+							[options]="getFieldConfig(field.key)?.options || []"
+							class="w-full md:w-72 lg:w-96"
+						></p-select>
+					</ng-container>
+
+					<div
+						class="text-red-600 mt-2"
+						*ngIf="
+							groupForm.get('setting')?.get(field.key)
+								?.invalid &&
+							groupForm.get('setting')?.get(field.key)?.touched
+						"
+					>
+						<span
+							*ngIf="groupForm.get('setting')?.get(field.key)?.errors?.['required']"
+						>
+							This field is required
+						</span>
+						<span
+							*ngIf="groupForm.get('setting')?.get(field.key)?.errors?.['min'] || 
+							   groupForm.get('setting')?.get(field.key)?.errors?.['max']"
+						>
+							Value must be between
+							{{ getFieldConfig(field.key)?.min }} and
+							{{ getFieldConfig(field.key)?.max }}
+						</span>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+
+		<div class="flex gap-2">
+			<p-button
+				type="button"
+				severity="secondary"
+				label="Back to Assignment"
+				class="text-gray-400 rounded-md"
+				[routerLink]="[
+					'/classrooms',
+					classroomId(),
+					'assignments',
+					assignmentId()
+				]"
+			></p-button>
+			<p-button
+				type="submit"
+				label="Update Group"
+				class="text-gray-400 rounded-md"
+				[disabled]="groupForm.invalid || loading"
+			></p-button>
+		</div>
+	</form>
+</div>

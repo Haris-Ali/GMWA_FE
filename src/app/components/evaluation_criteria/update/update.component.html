@@ -1,0 +1,105 @@
+<div class="heading mb-4">
+	<h1 class="font-bold text-3xl">Update Evaluation Criteria</h1>
+</div>
+<div class="bg-white rounded-border w-full p-4">
+	<form
+		(ngSubmit)="onSubmit()"
+		[formGroup]="evaluationCriteriaForm"
+		class="flex flex-col gap-4"
+	>
+		<div class="flex flex-col gap-2">
+			<label for="name" class="font-bold text-base">
+				Name
+				<span class="text-red-600">*</span>
+			</label>
+			<input
+				type="text"
+				pInputText
+				type="text"
+				formControlName="name"
+				placeholder="Enter evaluation criteria name here..."
+				class="w-full md:w-72 lg:w-96 rounded-md border outline-none"
+				required
+			/>
+			<div *ngIf="evaluationCriteriaForm.get('name')?.invalid && evaluationCriteriaForm.get('name')?.touched" class="text-red-600 mt-2">Name is required</div>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<label for="minValue" class="font-bold text-base">
+				Min Value
+				<span class="text-red-600">*</span>
+			</label>
+			<input
+				type="number"
+				pInputText
+				type="number"
+				formControlName="min_value"
+				placeholder="Enter minimum value here..."
+				class="w-full md:w-72 lg:w-96 rounded-md border outline-none"
+				required
+			/>
+			<div *ngIf="evaluationCriteriaForm.get('min_value')?.invalid && evaluationCriteriaForm.get('min_value')?.touched" class="text-red-600 mt-2">Min Value is required</div>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="maxValue" class="font-bold text-base">
+				Max Value
+				<span class="text-red-600">*</span>
+			</label>
+			<input
+				type="number"
+				pInputText
+				type="number"
+				formControlName="max_value"
+				placeholder="Enter maximum value here..."
+				class="w-full md:w-72 lg:w-96 rounded-md border outline-none"
+				required
+			/>
+			<div *ngIf="evaluationCriteriaForm.get('max_value')?.invalid && evaluationCriteriaForm.get('max_value')?.touched" class="text-red-600 mt-2">Max Value is required</div>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="weightage" class="font-bold text-base">
+				Weightage
+				<span class="text-red-600">*</span>
+			</label>
+			<input
+				type="number"
+				pInputText
+				type="number"
+				formControlName="weightage"
+				placeholder="Enter weightage here..."
+				class="w-full md:w-72 lg:w-96 rounded-md border outline-none"
+				required
+				step="0.01"
+				[min]="0"
+				[max]="1"
+			/>
+			<div *ngIf="evaluationCriteriaForm.get('weightage')?.invalid && evaluationCriteriaForm.get('weightage')?.touched" class="text-red-600 mt-2">
+				<span *ngIf="evaluationCriteriaForm.get('weightage')?.errors?.['required']">Weightage is required</span>
+				<span *ngIf="evaluationCriteriaForm.get('weightage')?.errors?.['max']">Weightage must be less than or equal to 1.0</span>
+			</div>
+		</div>
+		<div class="flex gap-2">
+			<p-button
+				type="button"
+				severity="secondary"
+				label="Back To Evaluation Criteria"
+				class="text-gray-400 rounded-md"
+				[routerLink]="[
+					'/classrooms',
+					this.classroomId(),
+					'assignments',
+					this.assignmentId(),
+					'milestones',
+					this.milestoneId(),
+					'evaluation_criteria'
+				]"
+			></p-button>
+			<p-button
+				type="submit"
+				label="Update Evaluation Criteria"
+				class="text-gray-400 rounded-md"
+				[disabled]="loading || evaluationCriteriaForm.invalid"
+			></p-button>
+		</div>
+	</form>
+</div>

@@ -8,12 +8,6 @@
 			class="text-gray-400 rounded-md" 
 			[routerLink]="['/classrooms', classroomId()]"
 		></p-button>
-		<p-button 
-			type="button"
-			label="Manage {{ assignment?.evaluation_method }} Settings" 
-			class="text-gray-400 rounded-md" 
-			[routerLink]="['/classrooms', classroomId(), 'assignments']"
-		></p-button>
 	</div>
 </div>
 <div class="bg-white rounded-border w-full p-4 mb-4">
@@ -72,5 +66,5 @@
 	<app-milestone-list [assignmentId]="assignmentId()" [classroomId]="classroomId()"/>
 </div>
 <div class="bg-white rounded-border w-full p-4">
-	<app-groups-list/>
+	<app-groups-list [assignmentId]="assignmentId()" [classroomId]="classroomId()"/>
 </div>

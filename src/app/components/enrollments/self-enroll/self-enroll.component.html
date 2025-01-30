@@ -1,0 +1,13 @@
+<div class="heading mb-4">
+	<h1 class="font-bold text-3xl">Self Enroll in <span class="text-primary">{{ classroom?.name }}</span></h1>
+</div>
+<div class="bg-white rounded-border w-full p-4">
+	<form (ngSubmit)="selfEnroll()" class="flex flex-col gap-4">
+		<label for="roll_number" class="font-bold text-base">Roll Number<span class="text-red-600">*</span></label>
+		<input type="number" pInputText formControlName="roll_number" placeholder="Enter your roll number here..." class="w-full md:w-72 lg:w-96 rounded-md border outline-none" required>
+		<div *ngIf="rollNumber.invalid && (rollNumber.dirty || rollNumber.touched)" class="text-red-600 mt-2">
+			<span *ngIf="rollNumber.errors?.['required']">Roll number is required</span>
+		</div>
+		<p-button type="submit" label="Self Enroll" class="text-gray-400 rounded-md" [disabled]="loading || rollNumber.invalid"></p-button>
+	</form>
+</div>

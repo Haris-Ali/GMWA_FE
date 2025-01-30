@@ -9,17 +9,20 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 	template: `
 		<nav
 			aria-label="breadcrumb"
-			class="breadcrumb-container"
+			class="bg-surface-overlay p-2 rounded-[var(--content-border-radius)] mb-4 overflow-x-auto"
 			*ngIf="breadcrumbs.length > 0"
 		>
-			<ol class="breadcrumb">
+			<ol class="flex flex-nowrap items-center list-none p-0 min-w-max">
 				<li
 					*ngFor="let breadcrumb of breadcrumbs; let last = last"
-					class="breadcrumb-item"
-					[ngClass]="{ active: last }"
+					class="mr-2 text-sm md:text-base whitespace-nowrap"
+					[ngClass]="{ 'font-bold': last }"
 				>
 					<ng-container *ngIf="!last">
-						<a [routerLink]="breadcrumb.url">
+						<a
+							[routerLink]="breadcrumb.url"
+							class="hover:text-primary"
+						>
 							<ng-container
 								*ngIf="breadcrumb.label === 'dashboard'"
 							>
@@ -103,11 +106,10 @@ export class AppBreadCrumbComponent implements OnInit {
 						const labelText = (label as { text: string }).text;
 						if (labelText.startsWith(":")) {
 							const paramName = labelText.substring(1);
-							
-							displayLabel =
-								child.snapshot.params[paramName] || label;
+							displayLabel = child.snapshot.params[paramName] || label;
 						}
 					}
+					if (displayLabel.includes("_")) displayLabel = displayLabel.replace("_", " ");
 					if (!breadcrumbs.find((bc) => bc.url === breadcrumbURL)) {
 						breadcrumbs.push({
 							label: displayLabel,

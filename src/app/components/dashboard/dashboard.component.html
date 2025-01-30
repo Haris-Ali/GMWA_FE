@@ -22,18 +22,18 @@
 							<ul>
 								@if (userRole === 'teacher') {
 									<li>
-										<a routerLink="/invitation/invite-user" class="font-normal cursor-pointer text-sm border-b border-black">Invite New User(s)</a>
+										<a routerLink="/invitation/new" class="font-normal cursor-pointer text-sm border-b border-black">Invite New User(s)</a>
 									</li>
 									<li>
-										<a routerLink="/classroom/new" class="font-normal cursor-pointer text-sm border-b border-black">Create New Classroom</a>
+										<a routerLink="/classrooms/add" class="font-normal cursor-pointer text-sm border-b border-black">Create New Classroom</a>
 									</li>
 								}
 								@else {
 									<li>
-										<a routerLink="/invitation/invite-user" class="font-normal cursor-pointer text-sm border-b border-black">Invite New User(s)</a>
+										<a routerLink="/invitation/new" class="font-normal cursor-pointer text-sm border-b border-black">Invite New User(s)</a>
 									</li>
 									<li>
-										<a routerLink="/registrations/list" class="font-normal cursor-pointer text-sm border-b border-black">View Registrations</a>
+										<a routerLink="/registrations" class="font-normal cursor-pointer text-sm border-b border-black">View Registrations</a>
 									</li>
 								}
 							</ul>

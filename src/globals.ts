@@ -101,6 +101,22 @@ export const globals = {
 			delete: baseUrl + "/milestones/:id",
 			show: baseUrl + "/milestones/:id",
 		},
+
+		groups: {
+			list: baseUrl + "/assignments/:id/groups",
+			create: baseUrl + "/assignments/:id/groups",
+			update: baseUrl + "/groups/:id",
+			delete: baseUrl + "/groups/:id",
+			show: baseUrl + "/groups/:id",
+		},
+
+		evaluation_criteria: {
+			list: baseUrl + "/milestones/:milestone_id/evaluation_criteria",
+			create: baseUrl + "/milestones/:milestone_id/evaluation_criteria",
+			update: baseUrl + "/evaluation_criteria/:id",
+			delete: baseUrl + "/evaluation_criteria/:id",
+			show: baseUrl + "/evaluation_criteria/:id",
+		},
 	},
 };
 

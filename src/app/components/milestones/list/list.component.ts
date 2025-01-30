@@ -52,6 +52,12 @@ export class ListComponent {
 
 	buttons = [
 		{
+			label: "Manage Criteria",
+			severity: "primary",
+			callback: (data: Milestone) => this.manageCriteria(data.id),
+			condition: (data: Milestone) => data.can_manage_criteria,
+		},
+		{
 			label: "Perform Evaluation",
 			severity: "success",
 			callback: (data: Milestone) => this.performEvaluation(data.id),
@@ -84,13 +90,14 @@ export class ListComponent {
 
 		let url = `${this.globals.urls.milestones.list}`;
 		url = url.replace(":id", this.assignmentId().toString());
-		this.httpService.getRequest(url).subscribe({
+		this.httpService.getRequest(url, params).subscribe({
 			next: (response: any) => {
 				this.tableData = response.milestones;
 				this.totalRecords = response.pagination.count;
 				this.assignmentEvaluationMethod =
 					response.milestones[0].assignment_evaluation_method;
-				this.assignmentStatus = response.milestones[0].assignment_status;
+				this.assignmentStatus =
+					response.milestones[0].assignment_status;
 			},
 		});
 	}
@@ -146,6 +153,12 @@ export class ListComponent {
 				});
 			},
 		});
+	}
+
+	manageCriteria(id: number) {
+		this.router.navigate([
+			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/milestones/${id}/evaluation_criteria`,
+		]);
 	}
 
 	performEvaluation(id: number) {

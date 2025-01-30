@@ -11,6 +11,9 @@ import { Router, RouterModule } from "@angular/router";
 import { globals } from "../../../../globals";
 import { CSVStudent, Enrollment } from "../enrollments.type";
 import { FileUploadModule } from "primeng/fileupload";
+import { CopyClipboardDirective } from "../../../../directives/copy-clipboard.directive";
+import { Toast } from "primeng/toast";
+import { MessageService } from "primeng/api";
 
 @Component({
 	selector: "app-list",
@@ -23,8 +26,10 @@ import { FileUploadModule } from "primeng/fileupload";
 		Button,
 		RouterModule,
 		FileUploadModule,
+		CopyClipboardDirective,
+		Toast,
 	],
-	providers: [ConfirmationService, HttpService],
+	providers: [ConfirmationService, HttpService, MessageService],
 	template: `
 		<div class="heading mb-4">
 			<h6 class="font-bold text-xl">Enrolled Students</h6>
@@ -38,6 +43,14 @@ import { FileUploadModule } from "primeng/fileupload";
 					(search)="onSearch($event)"
 				></app-search>
 				<div class="flex gap-2">
+					<p-button
+						type="button"
+						severity="contrast"
+						label="Copy Self Enrollment Link"
+						class="text-gray-400 rounded-md"
+						[copy-clipboard]="selfEnrollmentLink"
+						(copied)="copySelfEnrollmentLink($event)"
+					></p-button>
 					<p-fileUpload
 						mode="basic"
 						chooseLabel="Import CSV"
@@ -66,12 +79,14 @@ import { FileUploadModule } from "primeng/fileupload";
 			/>
 		</div>
 		<p-confirmDialog></p-confirmDialog>
+		<p-toast />
 	`,
 })
 export class EnrollmentsListComponent {
 	private httpService = inject(HttpService);
 	private router = inject(Router);
 	private confirmationService = inject(ConfirmationService);
+	private messageService = inject(MessageService);
 
 	globals = globals;
 	classroomId = input.required<number>();
@@ -102,8 +117,11 @@ export class EnrollmentsListComponent {
 	selectedFile: File | null = null;
 	csvStudents: CSVStudent[] = [];
 
+	selfEnrollmentLink = "";
+
 	constructor() {
 		effect(() => {
+			this.selfEnrollmentLink = `http://localhost:4200/classrooms/${this.classroomId()}/self-enroll`;
 			this.getData();
 		});
 	}
@@ -288,6 +306,13 @@ export class EnrollmentsListComponent {
 			error: (error) => {
 				this.httpService.showError(error.message, "Error");
 			},
+		});
+	}
+
+	copySelfEnrollmentLink(payload: string) {
+		this.messageService.add({
+			severity: "info",
+			detail: "Link copied to clipboard",
 		});
 	}
 }

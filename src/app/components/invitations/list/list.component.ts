@@ -5,7 +5,7 @@ import { TableComponent } from "../../table.component";
 import { SearchComponent } from "../../search.component";
 import { HttpParams } from "@angular/common/http";
 import { Button } from "primeng/button";
-import { Router, RouterModule } from "@angular/router";
+import { RouterModule } from "@angular/router";
 import { Invitation } from "../invitations.types";
 import { globals } from "../../../../globals";
 
@@ -13,12 +13,12 @@ import { globals } from "../../../../globals";
 	selector: "app-list",
 	standalone: true,
 	imports: [CommonModule, RouterModule, TableComponent, SearchComponent, Button],
+	providers: [HttpService],
 	templateUrl: "./list.component.html",
 	styleUrl: "./list.component.scss",
 })
 export class ListComponent implements OnInit {
 	private httpService = inject(HttpService);
-	private router = inject(Router);
 
 	globals = globals;
 
@@ -91,11 +91,12 @@ export class ListComponent implements OnInit {
 		let url = this.globals.urls.invitations.resend;
 		url = url.replace(":id", row.id.toString());
 		this.httpService.postRequest(url, {}).subscribe({
-			next: () => {
+			next: (response: any) => {
+				this.httpService.showSuccess(response.message, "Invitation Resend");
 				this.getData();
 			},
 			error: (error) => {
-				console.error("Error updating status:", error);
+				this.httpService.showError(error.message, "Invitation Resend");
 			},
 		});
 	}

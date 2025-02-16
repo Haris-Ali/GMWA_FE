@@ -5,6 +5,7 @@ import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { HttpService } from "../../services/http.service";
 import { globals } from "../../globals";
+import { UserService } from "../../services/user.service";
 
 @Component({
 	selector: "app-topbar",
@@ -15,6 +16,7 @@ import { globals } from "../../globals";
 })
 export class AppTopBarComponent {
 	httpService = inject(HttpService);
+	userService = inject(UserService);
 	router = inject(Router);
 	globals = globals;
 	items!: MenuItem[];
@@ -33,6 +35,7 @@ export class AppTopBarComponent {
 			.subscribe({
 				next: (response) => {
 					localStorage.clear();
+					this.userService.resetRole();
 					this.router.navigate(["/auth/login"]);
 				},
 				error: (error) => {

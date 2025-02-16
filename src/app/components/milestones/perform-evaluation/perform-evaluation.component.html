@@ -1,0 +1,193 @@
+<div class="heading mb-4">
+	<h1 class="font-bold text-3xl">Perform Evaluation</h1>
+</div>
+
+<div class="bg-white rounded-border w-full p-4">
+	<form
+		[formGroup]="evaluationForm"
+		(ngSubmit)="onSubmit()"
+		class="flex flex-col gap-4"
+	>
+		<p-accordion
+			[activeIndex]="[0]"
+			[multiple]="true"
+			formArrayName="markings"
+		>
+			<ng-container
+				*ngFor="
+					let markingForm of markingsFormArray.controls;
+					let i = index
+				"
+				[formGroupName]="i"
+			>
+				<p-accordion-panel [value]="i">
+					<p-accordion-header
+						style="font-weight: bold; font-size: 1.25rem"
+					>
+						@if (evaluationData.markings[i].enrollment.student.id
+						=== user.id) {
+						<span>Self Evaluation</span>
+						} @else {
+						<span>
+							Evaluation for Student Roll Number:
+							{{ markingForm.get("rollNumber")?.value }}
+						</span>
+						}
+					</p-accordion-header>
+					<p-accordion-content>
+						<div
+							*ngFor="
+								let criterion of evaluationData.evaluation_criteria
+							"
+							ngClass="flex flex-col gap-2"
+						>
+							<div
+								[formGroupName]="'criterion_' + criterion.id"
+								class="flex flex-col gap-2"
+							>
+								<div>
+									<label
+										[for]="
+											'score_' + criterion.id + '_' + i
+										"
+										class="block font-bold mb-2"
+									>
+										{{ criterion.name }} ({{
+											criterion.min_value
+										}}
+										- {{ criterion.max_value }})
+									</label>
+									<p-inputNumber
+										[id]="'score_' + criterion.id + '_' + i"
+										formControlName="score"
+										[min]="+criterion.min_value"
+										[max]="+criterion.max_value"
+										[minFractionDigits]="1"
+										[maxFractionDigits]="1"
+										class="w-full md:w-72 lg:w-96"
+									></p-inputNumber>
+									<div
+										class="text-red-600 mt-2"
+										*ngIf="
+											markingForm
+												.get(
+													'criterion_' + criterion.id
+												)
+												?.get('score')?.invalid &&
+											markingForm
+												.get(
+													'criterion_' + criterion.id
+												)
+												?.get('score')?.touched
+										"
+									>
+										<span
+											*ngIf="markingForm.get('criterion_' + criterion.id)?.get('score')?.errors?.['required']"
+										>
+											Score is required
+										</span>
+										<span
+											*ngIf="markingForm.get('criterion_' + criterion.id)?.get('score')?.errors?.['min']"
+										>
+											Score must be greater than or equal
+											to {{ criterion.min_value }}
+										</span>
+										<span
+											*ngIf="markingForm.get('criterion_' + criterion.id)?.get('score')?.errors?.['max']"
+										>
+											Score must be less than or equal to
+											{{ criterion.max_value }}
+										</span>
+									</div>
+								</div>
+
+								<div>
+									<label
+										[for]="
+											'feedback_' + criterion.id + '_' + i
+										"
+										class="block font-bold mb-2"
+									>
+										Feedback for {{ criterion.name }}
+									</label>
+									<textarea
+										pTextarea
+										[id]="
+											'feedback_' + criterion.id + '_' + i
+										"
+										formControlName="feedback"
+										rows="4"
+										class="w-full md:w-72 lg:w-96"
+										placeholder="Enter your feedback here..."
+									></textarea>
+								</div>
+							</div>
+							<!-- <div class="flex flex-col gap-2">
+								<label
+									[for]="
+										'criterion_' + criterion.id + '_' + i
+									"
+									class="font-bold"
+								>
+									{{ criterion.name }}
+									({{ criterion.min_value }} -
+									{{ criterion.max_value }})
+									<span class="text-red-600">*</span>
+								</label>
+								<p-inputNumber
+									[id]="'criterion_' + criterion.id + '_' + i"
+									type="number"
+									[formGroupName]="'criterion_' + criterion.id"
+									[min]="criterion.min_value"
+									[max]="criterion.max_value"
+									[minFractionDigits]="1"
+									[maxFractionDigits]="1"
+									class="w-full md:w-72 lg:w-96"
+								/>
+								<div class="text-red-600 mt-2" *ngIf="markingsFormArray.at(i).get('criterion_' + criterion.id)?.get('score')?.invalid && markingsFormArray.at(i).get('criterion_' + criterion.id)?.get('score')?.touched">
+									<span *ngIf="markingsFormArray.at(i).get('criterion_' + criterion.id)?.get('score')?.errors?.['required']">Score is required</span>
+									<span *ngIf="markingsFormArray.at(i).get('criterion_' + criterion.id)?.get('score')?.errors?.['min']">Score must be more than or equal to {{criterion.min_value}}</span>
+									<span *ngIf="markingsFormArray.at(i).get('criterion_' + criterion.id)?.get('score')?.errors?.['max']">Score must be less than or equal to {{criterion.max_value}}</span>
+								</div>
+							</div>
+							<div class="flex flex-col gap-2">
+								<label [for]="'feedback_' + criterion.id + '_' + i" class="font-bold">
+									Feedback for {{criterion.name}}
+								</label>
+								<textarea
+									pTextarea
+									[id]="'feedback_' + criterion.id + '_' + i"
+									[formGroupName]="'criterion_' + criterion.id"
+									placeholder="Enter feedback for {{criterion.name}}"
+									class="w-full md:w-72 lg:w-96"
+									rows="5"
+								></textarea>
+							</div> -->
+						</div>
+					</p-accordion-content>
+				</p-accordion-panel>
+			</ng-container>
+		</p-accordion>
+
+		<div class="flex gap-2">
+			<p-button
+				type="button"
+				severity="secondary"
+				label="Back to Assignment"
+				class="text-gray-400 rounded-md"
+				[routerLink]="[
+					'/classrooms',
+					classroomId(),
+					'assignments',
+					assignmentId()
+				]"
+			></p-button>
+			<p-button
+				type="submit"
+				label="Submit Evaluation"
+				class="text-gray-400 rounded-md"
+				[disabled]="!evaluationForm.valid || loading"
+			></p-button>
+		</div>
+	</form>
+</div>

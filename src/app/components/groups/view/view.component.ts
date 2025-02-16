@@ -5,6 +5,7 @@ import { Router, RouterModule } from "@angular/router";
 import { Group } from "../groups.type";
 import { CommonModule } from "@angular/common";
 import { Button } from "primeng/button";
+import { UserService } from "../../../../services/user.service";
 
 @Component({
 	selector: "app-view",
@@ -17,6 +18,9 @@ import { Button } from "primeng/button";
 export class ViewComponent {
 	private httpService = inject(HttpService);
 	private router = inject(Router);
+	private userService = inject(UserService);
+
+	userRole = this.userService.getRole();
 
 	globals = globals;
 

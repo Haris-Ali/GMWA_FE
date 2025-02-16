@@ -40,6 +40,7 @@ import { UserService } from "../../../../services/user.service";
 						label="Add Assignment"
 						icon="pi pi-plus"
 						(onClick)="addAssignment()"
+						*ngIf="userRole === 'teacher'"
 					></p-button>
 				</div>
 			</div>
@@ -98,7 +99,7 @@ export class ClassroomAssignmentsListComponent {
 		{
 			label: "Show Results",
 			severity: "success",
-			callback: (data: Assignment) => this.showStudentResults(data.id),
+			callback: (data: Assignment) => this.calculateMarks(data),
 			condition: (data: Assignment) =>
 				data.can_calculate_student_marks && this.userRole === "student",
 		},
@@ -108,17 +109,20 @@ export class ClassroomAssignmentsListComponent {
 			severity: (data: Assignment) =>
 				data.status === "published" ? "danger" : "success",
 			callback: (data: Assignment) => this.toggleStatus(data),
+			condition: (data: Assignment) => this.userRole === "teacher",
 		},
 		{
 			label: "Edit",
 			severity: "contrast",
 			callback: (data: Assignment) => this.editDetails(data.id),
-			condition: (data: Assignment) => data.status !== "published",
+			condition: (data: Assignment) =>
+				data.status !== "published" && this.userRole === "teacher",
 		},
 		{
 			label: "Delete",
 			severity: "danger",
 			callback: (data: Assignment) => this.deleteAssignment(data.id),
+			condition: (data: Assignment) => this.userRole === "teacher",
 		},
 	];
 
@@ -176,9 +180,17 @@ export class ClassroomAssignmentsListComponent {
 		]);
 	}
 
-	showResults(id: number) {}
+	showResults(id: number) {
+		this.router.navigate([
+			`/classrooms/${this.classroomId()}/assignments/${id}/results`,
+		])
+	}
 
-	showStudentResults(id: number) {}
+	calculateMarks(data: any) {
+		this.router.navigate([
+			`/classrooms/${this.classroomId()}/assignments/${data.id}/${data.grouping_id}/student-marks`,
+		])
+	}
 
 	toggleStatus(assignment: Assignment) {
 		const action =

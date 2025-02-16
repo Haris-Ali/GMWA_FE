@@ -13,6 +13,7 @@
 				label="Add Group"
 				icon="pi pi-plus"
 				(onClick)="addGroup()"
+				*ngIf="userRole === 'teacher'"
 			></p-button>
 		</div>
 	</div>

@@ -14,14 +14,14 @@
 				label="End Submissions"
 				icon="pi pi-ban"
 				(onClick)="endSubmissions()"
-				*ngIf="assignmentStatus !== 'draft'"
+				*ngIf="assignmentStatus !== 'draft' && userRole === 'teacher'"
 			></p-button>
 			<p-button
 				type="button"
 				label="Add Milestone"
 				icon="pi pi-plus"
 				(onClick)="addMilestone()"
-				*ngIf="assignmentEvaluationMethod !== 'Q'"
+				*ngIf="canAddMilestone"
 			></p-button>
 		</div>
 	</div>

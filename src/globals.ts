@@ -100,6 +100,12 @@ export const globals = {
 			update: baseUrl + "/milestones/:id",
 			delete: baseUrl + "/milestones/:id",
 			show: baseUrl + "/milestones/:id",
+			performEvaluation:
+				baseUrl + "/milestones/:milestone_id/perform_evaluations",
+			submitEvaluation:
+				baseUrl + "/milestones/:milestone_id/submit_evaluations",
+			showEvaluation:
+				baseUrl + "/milestones/:milestone_id/show_evaluations",
 		},
 
 		groups: {

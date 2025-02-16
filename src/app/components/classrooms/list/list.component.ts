@@ -9,11 +9,14 @@ import { HttpParams } from "@angular/common/http";
 import { Router, RouterModule } from "@angular/router";
 import { ConfirmDialog, ConfirmDialogModule } from "primeng/confirmdialog";
 import { ConfirmationService } from "primeng/api";
+import { UserService } from "../../../../services/user.service";
+import { CommonModule } from "@angular/common";
 
 @Component({
 	selector: "app-list",
 	standalone: true,
 	imports: [
+		CommonModule,
 		TableComponent,
 		RouterModule,
 		SearchComponent,
@@ -28,6 +31,9 @@ export class ListComponent {
 	private httpService = inject(HttpService);
 	private router = inject(Router);
 	private confirmationService = inject(ConfirmationService);
+	private userService = inject(UserService);
+
+	userRole = this.userService.getRole();
 
 	globals = globals;
 
@@ -51,11 +57,13 @@ export class ListComponent {
 			label: "Edit Classroom",
 			severity: "secondary",
 			callback: (data: any) => this.editDetails(data.id),
+			condition: (data: any) => this.userRole === "teacher",
 		},
 		{
 			label: "Delete Classroom",
 			severity: "danger",
 			callback: (data: any) => this.deleteClassroom(data.id),
+			condition: (data: any) => this.userRole === "teacher",
 		},
 	];
 
@@ -127,17 +135,18 @@ export class ListComponent {
 			accept: () => {
 				let url = `${this.globals.urls.classrooms.delete}`;
 				url = url.replace(":id", id.toString());
-				this.httpService
-					.deleteRequest(url)
-					.subscribe({
-						next: (response: any) => {
-							this.httpService.showSuccess(response.message, "Classroom Deleted");
-							this.getData();
-						},
-						error: (error) => {
-							console.error("Error deleting classroom:", error);
-						},
-					});
+				this.httpService.deleteRequest(url).subscribe({
+					next: (response: any) => {
+						this.httpService.showSuccess(
+							response.message,
+							"Classroom Deleted"
+						);
+						this.getData();
+					},
+					error: (error) => {
+						console.error("Error deleting classroom:", error);
+					},
+				});
 			},
 		});
 	}

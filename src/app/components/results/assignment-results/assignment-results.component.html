@@ -1,0 +1,20 @@
+<div class="heading mb-4">
+	<h1 class="font-bold text-3xl">Assignment Results</h1>
+</div>
+<div class="bg-white rounded-border w-full p-4">
+	<div class="flex justify-between mb-4 md:flex-row flex-col gap-2">
+		<app-search
+			placeholder="Search assignments..."
+			(search)="onSearch($event)"
+		></app-search>
+	</div>
+	<app-table
+		[cols]="tableColumns"
+		[data]="tableData"
+		[buttons]="buttons"
+		[loading]="loading"
+		[totalRecords]="totalRecords"
+		[rows]="5"
+		(pageChangeOutput)="onPageChange($event)"
+	/>
+</div>

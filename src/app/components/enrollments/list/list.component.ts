@@ -14,6 +14,7 @@ import { FileUploadModule } from "primeng/fileupload";
 import { CopyClipboardDirective } from "../../../../directives/copy-clipboard.directive";
 import { Toast } from "primeng/toast";
 import { MessageService } from "primeng/api";
+import { UserService } from "../../../../services/user.service";
 
 @Component({
 	selector: "app-list",
@@ -42,7 +43,7 @@ import { MessageService } from "primeng/api";
 					placeholder="Search by student email..."
 					(search)="onSearch($event)"
 				></app-search>
-				<div class="flex gap-2">
+				<div class="flex gap-2" *ngIf="userRole === 'teacher'">
 					<p-button
 						type="button"
 						severity="contrast"
@@ -87,7 +88,9 @@ export class EnrollmentsListComponent {
 	private router = inject(Router);
 	private confirmationService = inject(ConfirmationService);
 	private messageService = inject(MessageService);
+	private userService = inject(UserService);
 
+	userRole = this.userService.getRole();
 	globals = globals;
 	classroomId = input.required<number>();
 
@@ -96,7 +99,9 @@ export class EnrollmentsListComponent {
 		{ header: "Student Email", field: "student_email" },
 		{ header: "Student Name", field: "student_name" },
 		{ header: "Enrolled At", field: "created_at", type: "date" },
-		{ header: "Actions", field: "", type: "action" },
+		...(this.userRole === "teacher"
+			? [{ header: "Actions", field: "", type: "action" }]
+			: []),
 	];
 
 	tableData: Enrollment[] = [];
@@ -106,6 +111,7 @@ export class EnrollmentsListComponent {
 			label: "Remove",
 			severity: "danger",
 			callback: (data: Enrollment) => this.removeStudent(data),
+			condition: (data: Enrollment) => this.userRole === "teacher",
 		},
 	];
 

@@ -278,6 +278,44 @@ export const routes: Routes = [
 				},
 			},
 			{
+				title: "Assignment | View Results",
+				path: "classrooms/:classroomId/assignments/:assignmentId/results",
+				loadComponent: () =>
+					import(
+						"./components/results/assignment-results/assignment-results.component"
+					).then((m) => m.AssignmentResultsComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"results",
+					],
+				},
+			},
+			{
+				title: "Assignment | Student Marks",
+				path: "classrooms/:classroomId/assignments/:assignmentId/:groupingId/student-marks",
+				loadComponent: () =>
+					import(
+						"./components/results/student-results/student-results.component"
+					).then((m) => m.StudentResultsComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"student marks",
+					],
+				},
+			},
+			{
 				title: "Milestone | Evaluation Criteria",
 				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/evaluation_criteria",
 				loadComponent: () =>
@@ -338,6 +376,27 @@ export const routes: Routes = [
 						{ text: ":milestoneId", dynamic: true },
 						"evaluation_criteria",
 						{ text: ":evaluationCriteriaId", dynamic: true },
+					],
+				},
+			},
+			{
+				title: "Milestone | Perform Evaluation",
+				path: "classrooms/:classroomId/assignments/:assignmentId/milestones/:milestoneId/perform_evaluation",
+				loadComponent: () =>
+					import(
+						"./components/milestones/perform-evaluation/perform-evaluation.component"
+					).then((c) => c.PerformEvaluationComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"milestones",
+						{ text: ":milestoneId", dynamic: true },
+						"perform evaluation",
 					],
 				},
 			},

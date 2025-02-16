@@ -33,10 +33,12 @@ export class ListComponent {
 	private confirmationService = inject(ConfirmationService);
 	private userService = inject(UserService);
 
+	userRole = this.userService.getRole();
 	assignmentId = input.required<number>();
 	classroomId = input.required<number>();
 	assignmentEvaluationMethod: string = "";
 	assignmentStatus: string = "";
+	canAddMilestone: boolean = true;
 
 	globals = globals;
 
@@ -55,7 +57,8 @@ export class ListComponent {
 			label: "Manage Criteria",
 			severity: "primary",
 			callback: (data: Milestone) => this.manageCriteria(data.id),
-			condition: (data: Milestone) => data.can_manage_criteria,
+			condition: (data: Milestone) =>
+				data.can_manage_criteria && this.userRole === "teacher",
 		},
 		{
 			label: "Perform Evaluation",
@@ -64,14 +67,23 @@ export class ListComponent {
 			condition: (data: Milestone) => data.can_perform_evaluation,
 		},
 		{
+			label: "Show Evaluations",
+			severity: "primary",
+			callback: (data: Milestone) => this.showEvaluations(data.id),
+			condition: (data: Milestone) => data.can_show_evaluation,
+		},
+		{
 			label: "Edit",
 			severity: "secondary",
 			callback: (data: Milestone) => this.editDetails(data.id),
+			condition: (data: Milestone) => this.userRole === "teacher",
 		},
+
 		{
 			label: "Delete",
 			severity: "danger",
 			callback: (data: Milestone) => this.deleteMilestone(data.id),
+			condition: (data: Milestone) => this.userRole === "teacher",
 		},
 	];
 
@@ -98,6 +110,7 @@ export class ListComponent {
 					response.milestones[0].assignment_evaluation_method;
 				this.assignmentStatus =
 					response.milestones[0].assignment_status;
+				this.canAddMilestone = response.milestones[0].can_add_milestone;
 			},
 		});
 	}
@@ -166,6 +179,19 @@ export class ListComponent {
 			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/milestones/${id}/perform_evaluation`,
 		]);
 	}
+
+	showEvaluations(id: number) {
+		let url = `${this.globals.urls.milestones.showEvaluation}`;
+		url = url.replace(":milestone_id", id.toString());
+		// this.router.navigate([url]);
+		this.httpService.getRequest(url, new HttpParams().set("grouping_id", 2)).subscribe({
+			next: (response: any) => {
+				console.log(response);
+			},
+		});
+	}
+
+
 
 	editDetails(id: number) {
 		this.router.navigate([

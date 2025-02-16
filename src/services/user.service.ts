@@ -6,7 +6,9 @@ import { Injectable, signal } from "@angular/core";
 export class UserService {
 	private userRole = signal<string | null>(null);
 
-	constructor() {}
+	constructor() {
+		this.loadUserData();
+	}
 
 	loadUserData() {
 		const userData = localStorage.getItem("user-data");

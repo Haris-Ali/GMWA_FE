@@ -32,6 +32,8 @@ export class GroupsListComponent {
 	private confirmationService = inject(ConfirmationService);
 	private userService = inject(UserService);
 
+	userRole = this.userService.getRole();
+
 	assignmentId = input.required<number>();
 	classroomId = input.required<number>();
 	assignmentEvaluationMethod: string = "";
@@ -57,11 +59,13 @@ export class GroupsListComponent {
 			label: "Edit",
 			severity: "secondary",
 			callback: (data: any) => this.editDetails(data.id),
+			condition: (data: any) => this.userRole === "teacher",
 		},
 		{
 			label: "Delete",
 			severity: "danger",
 			callback: (data: any) => this.deleteGroup(data.id),
+			condition: (data: any) => this.userRole === "teacher",
 		},
 	];
 

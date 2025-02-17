@@ -28,16 +28,16 @@ export class DashboardComponent {
 		this.userRole = user?.role ?? "teacher";
 		this.dashboardCards =
 			DASHBOARD_CONFIG[this.userRole] || DASHBOARD_CONFIG["teacher"];
-		// this.fetchStatsData();
+		this.fetchStatsData();
 	}
 
 	fetchStatsData() {
-		const body = { role: this.userRole };
 		this.httpService
-			.postRequest(this.globals.urls.dashboard.data, body)
+			.getRequest(this.globals.urls.dashboard.data)
 			.subscribe({
-				next: (response) => {
-					console.log("Response: ", response);
+				next: (response: any) => {
+					this.userData = response.data;
+					console.log(this.userData);
 				},
 				error: (error) => {
 					console.error("Error: ", error);

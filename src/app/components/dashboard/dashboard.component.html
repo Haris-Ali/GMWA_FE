@@ -6,7 +6,7 @@
 					<div class="flex justify-between mb-4">
 						<div>
 							<span class="block text-muted-color font-medium mb-4">{{ card.title }}</span>
-							<div class="text-surface-900 dark:text-surface-0 font-medium text-xl">152</div>
+							<div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ userData[card.dataKey] }}</div>
 						</div>
 						<div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem;">
 							<i class="text-blue-500 !text-xl" [ngClass]="card.icon"></i>

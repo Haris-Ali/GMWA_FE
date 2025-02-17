@@ -4,13 +4,13 @@ export const DASHBOARD_CONFIG = {
 			title: "Pending Registrations",
 			key: "pendingRegistrations",
 			icon: "pi pi-fw pi-user-plus",
-			dataKey: "pendingRegistrationsCount",
+			dataKey: "pending_registrations_count",
 		},
 		{
 			title: "Total Registrations",
 			key: "totalRegistrations",
 			icon: "pi pi-fw pi-users",
-			dataKey: "totalRegistrations",
+			dataKey: "total_registrations_count",
 		},
 		{
 			title: "Quick Links",
@@ -24,13 +24,13 @@ export const DASHBOARD_CONFIG = {
 			title: "Assignments",
 			key: "assignments",
 			icon: "pi pi-fw pi-file",
-			dataKey: "assignmentCount",
+			dataKey: "assignments_count",
 		},
 		{
 			title: "Classrooms",
 			key: "classrooms",
 			icon: "pi pi-fw pi-folder",
-			dataKey: "classroomCount",
+			dataKey: "classrooms_count",
 		},
 		{
 			title: "Quick Links",
@@ -44,13 +44,13 @@ export const DASHBOARD_CONFIG = {
 			title: "Assignments",
 			key: "assignments",
 			icon: "pi pi-fw pi-file",
-			dataKey: "assignmentCount",
+			dataKey: "published_assignments_count",
 		},
 		{
 			title: "Classrooms",
 			key: "classrooms",
 			icon: "pi pi-fw pi-folder",
-			dataKey: "classroomCount",
+			dataKey: "enrolled_classrooms_count",
 		},
 	],
 };

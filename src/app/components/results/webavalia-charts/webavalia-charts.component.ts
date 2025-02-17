@@ -3,13 +3,13 @@ import { Component, input } from "@angular/core";
 import { ChartModule } from "primeng/chart";
 
 @Component({
-	selector: "app-performance-charts",
+	selector: "app-webavalia-charts",
 	standalone: true,
 	imports: [ChartModule, CommonModule],
-	templateUrl: "./performance-charts.component.html",
-	styleUrl: "./performance-charts.component.scss",
+	templateUrl: "./webavalia-charts.component.html",
+	styleUrl: "./webavalia-charts.component.scss",
 })
-export class PerformanceChartsComponent {
+export class WebAvaliaChartsComponent {
 	data = input<any>();
 
 	chartOptions = {

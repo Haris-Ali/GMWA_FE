@@ -188,8 +188,10 @@ export class ClassroomAssignmentsListComponent {
 
 	calculateMarks(data: any) {
 		this.router.navigate([
-			`/classrooms/${this.classroomId()}/assignments/${data.id}/${data.grouping_id}/student-marks`,
-		])
+			`/classrooms/${this.classroomId()}/assignments/${
+				data.id
+			}/student-marks`,
+		]);
 	}
 
 	toggleStatus(assignment: Assignment) {

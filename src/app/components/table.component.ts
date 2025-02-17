@@ -66,6 +66,15 @@ import { ObjectPropertyTablePipe } from "../../pipes/object-property-table.pipe"
 								{{ rowData[col.field] | date : "dd/MM/yyyy" }}
 							</ng-container>
 
+							<ng-container *ngSwitchCase="'link'">
+								<p
+									(click)="show(rowData)"
+									class="cursor-pointer underline text-primary"
+								>
+									{{ rowData[col.field] }}
+								</p>
+							</ng-container>
+
 							<ng-container *ngSwitchDefault>
 								{{ rowData | objectPropertyTable : col.field }}
 							</ng-container>
@@ -96,6 +105,7 @@ export class TableComponent {
 	rows = input<number>();
 
 	pageChangeOutput = output<any>();
+	redirectOutput = output<any>();
 
 	getButtonLabel(button: any, rowData: any): string {
 		return typeof button.label === "function"
@@ -111,5 +121,9 @@ export class TableComponent {
 
 	pageChange(event: any) {
 		this.pageChangeOutput.emit(event);
+	}
+
+	show(event: any) {
+		this.redirectOutput.emit(event);
 	}
 }

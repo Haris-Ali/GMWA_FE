@@ -3,14 +3,22 @@ import { Component, inject, input } from "@angular/core";
 import { TableComponent } from "../../table.component";
 import { SearchComponent } from "../../search.component";
 import { HttpService } from "../../../../services/http.service";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { globals } from "../../../../globals";
 import { HttpParams } from "@angular/common/http";
+import { Button } from "primeng/button";
 
 @Component({
 	selector: "app-assignment-results",
 	standalone: true,
-	imports: [CommonModule, TableComponent, SearchComponent],
+	imports: [
+		CommonModule,
+		TableComponent,
+		SearchComponent,
+		RouterModule,
+		Button,
+	],
+	providers: [HttpService],
 	templateUrl: "./assignment-results.component.html",
 	styleUrl: "./assignment-results.component.scss",
 })
@@ -83,7 +91,28 @@ export class AssignmentResultsComponent {
 
 	calculateMarks(data: any) {
 		this.router.navigate([
-			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/${data.grouping_id}/student-marks`,
-		])
+			`/classrooms/${this.classroomId()}/assignments/${this.assignmentId()}/${
+				data.grouping_id
+			}/student-marks`,
+		]);
+	}
+
+	export() {
+		this.loading = true;
+		let url = this.globals.urls.assignments.exportResults;
+		url = url.replace(":id", this.assignmentId()?.toString() ?? "");
+		this.httpService.getRequest(url).subscribe({
+			next: (response: any) => {
+				this.httpService.showSuccess(
+					response.message,
+					"Export Results"
+				);
+				this.loading = false;
+			},
+			error: (error: any) => {
+				this.httpService.showError(error, "Export Results");
+				this.loading = false;
+			},
+		});
 	}
 }

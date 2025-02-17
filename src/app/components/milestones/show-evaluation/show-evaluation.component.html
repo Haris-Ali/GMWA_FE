@@ -1,0 +1,54 @@
+<div class="heading mb-4">
+	<h1 class="font-bold text-3xl">
+		Evaluations for {{ studentData.student.first_name }}
+		{{ studentData.student.last_name }} for Milestone:
+		{{ responseData.milestone.name }}
+	</h1>
+</div>
+<div class="bg-white rounded-border w-full p-4">
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<div class="flex flex-col gap-6">
+			<div class="flex flex-col gap-2">
+				<label class="font-bold text-base">Milestone Weightage</label>
+				<div class="text-gray-700">
+					{{ responseData.milestone.weightage }}
+				</div>
+			</div>
+			<div
+				class="flex flex-col gap-2"
+				*ngIf="
+					responseData.assignment.evaluation_method_setting
+						.self_assessment === 'true'
+				"
+			>
+				<label class="font-bold text-base">
+					Self Assessment Weightage
+				</label>
+				<div class="text-gray-700">
+					{{
+						responseData.assignment.evaluation_method_setting
+							.self_assessment_weightage
+					}}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<ng-container *ngFor="let marking of responseData.markings">
+	<div class="bg-white rounded-border w-full p-4 mt-4">
+		<h6 class="font-bold text-xl mb-2">
+			Evaluation by {{ getEvaluatorName(marking.marked_by_id) }}
+		</h6>
+		<ng-container *ngFor="let key of getEvaluationKeys(marking.evaluation)">
+			<p *ngIf="key !== 'feedback'">
+				{{ key }} (Range: {{ getCriteria(key).min_value }} -
+				{{ getCriteria(key).max_value }}) (Weightage:
+				{{ getCriteria(key).weightage }}): {{ marking.evaluation[key] }}
+			</p>
+			<div *ngIf="key === 'feedback'">
+				<p>{{ key }}:</p>
+				<p>{{ marking.evaluation[key] }}</p>
+			</div>
+		</ng-container>
+	</div>
+</ng-container>

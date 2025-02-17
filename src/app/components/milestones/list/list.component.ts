@@ -66,12 +66,12 @@ export class ListComponent {
 			callback: (data: Milestone) => this.performEvaluation(data.id),
 			condition: (data: Milestone) => data.can_perform_evaluation,
 		},
-		{
-			label: "Show Evaluations",
-			severity: "primary",
-			callback: (data: Milestone) => this.showEvaluations(data.id),
-			condition: (data: Milestone) => data.can_show_evaluation,
-		},
+		// {
+		// 	label: "Show Evaluations",
+		// 	severity: "primary",
+		// 	callback: (data: Milestone) => this.showEvaluations(data.id),
+		// 	condition: (data: Milestone) => data.can_show_evaluation,
+		// },
 		{
 			label: "Edit",
 			severity: "secondary",
@@ -184,14 +184,14 @@ export class ListComponent {
 		let url = `${this.globals.urls.milestones.showEvaluation}`;
 		url = url.replace(":milestone_id", id.toString());
 		// this.router.navigate([url]);
-		this.httpService.getRequest(url, new HttpParams().set("grouping_id", 2)).subscribe({
-			next: (response: any) => {
-				console.log(response);
-			},
-		});
+		this.httpService
+			.getRequest(url, new HttpParams().set("grouping_id", 2))
+			.subscribe({
+				next: (response: any) => {
+					console.log(response);
+				},
+			});
 	}
-
-
 
 	editDetails(id: number) {
 		this.router.navigate([

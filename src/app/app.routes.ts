@@ -297,6 +297,25 @@ export const routes: Routes = [
 				},
 			},
 			{
+				title: "Assignment | My Result",
+				path: "classrooms/:classroomId/assignments/:assignmentId/student-marks",
+				loadComponent: () =>
+					import(
+						"./components/results/student-results/student-results.component"
+					).then((m) => m.StudentResultsComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						"student marks",
+					],
+				},
+			},
+			{
 				title: "Assignment | Student Marks",
 				path: "classrooms/:classroomId/assignments/:assignmentId/:groupingId/student-marks",
 				loadComponent: () =>
@@ -397,6 +416,26 @@ export const routes: Routes = [
 						"milestones",
 						{ text: ":milestoneId", dynamic: true },
 						"perform evaluation",
+					],
+				},
+			},
+			{
+				title: "Milestone | Show Evaluation",
+				path: "classrooms/:classroomId/assignments/:assignmentId/:groupingId/evaluations",
+				loadComponent: () =>
+					import(
+						"./components/milestones/show-evaluation/show-evaluation.component"
+					).then((c) => c.ShowEvaluationComponent),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: [
+						"dashboard",
+						"classrooms",
+						{ text: ":classroomId", dynamic: true },
+						"assignments",
+						{ text: ":assignmentId", dynamic: true },
+						{ text: ":groupingId", dynamic: true },
+						"show evaluation",
 					],
 				},
 			},

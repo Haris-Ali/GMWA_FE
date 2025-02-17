@@ -43,4 +43,8 @@ export class AppTopBarComponent {
 				},
 			});
 	}
+
+	profile() {
+		this.router.navigate(["/profile"]);
+	}
 }

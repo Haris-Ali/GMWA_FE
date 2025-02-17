@@ -6,6 +6,8 @@ export const globals = {
 	appName: "GMWA",
 
 	urls: {
+		currentUser: baseUrl + "/current-user",
+
 		auth: {
 			login: baseUrl + "/users/sign_in",
 			logout: baseUrl + "/users/sign_out",

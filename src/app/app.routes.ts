@@ -439,6 +439,18 @@ export const routes: Routes = [
 					],
 				},
 			},
+			{
+				title: "Profile",
+				path: "profile",
+				loadComponent: () =>
+					import("./components/profile.component").then(
+						(c) => c.ProfileComponent
+					),
+				canActivate: [() => authGuard()],
+				data: {
+					breadcrumbs: ["dashboard", "profile"],
+				},
+			},
 		],
 	},
 	{

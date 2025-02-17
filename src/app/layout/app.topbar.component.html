@@ -15,7 +15,7 @@
     </button> -->
 
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state$().profileSidebarVisible}">
-        <button class="p-link layout-topbar-button">
+        <button class="p-link layout-topbar-button" (click)="profile()">
             <i class="pi pi-user"></i>
         </button>
 		<button class="p-link layout-topbar-button" (click)="logout()">

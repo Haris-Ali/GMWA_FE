@@ -1,20 +1,20 @@
 import { Component, inject, input } from "@angular/core";
 import { HttpService } from "../../../../services/http.service";
-import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import { ActivatedRoute, RouterModule } from "@angular/router";
 import { globals } from "../../../../globals";
 import { CommonModule } from "@angular/common";
+import { Button } from "primeng/button";
 
 @Component({
 	selector: "app-show-evaluation",
 	standalone: true,
-	imports: [CommonModule, RouterModule],
+	imports: [CommonModule, RouterModule, Button],
 	providers: [HttpService],
 	templateUrl: "./show-evaluation.component.html",
 	styleUrl: "./show-evaluation.component.scss",
 })
 export class ShowEvaluationComponent {
 	private httpService = inject(HttpService);
-	private router = inject(Router);
 	private route = inject(ActivatedRoute);
 
 	globals = globals;
@@ -52,10 +52,13 @@ export class ShowEvaluationComponent {
 	}
 
 	getEvaluatorName(markedById: number): string {
-		if (markedById === this.responseData.grouping.id) return "self (Self Assessment)";
+		if (markedById === this.responseData.grouping.id)
+			return "self (Self Assessment)";
 		else {
-			let marker = this.responseData.markings.find((marking: any) => marking.marked_by_id === markedById);
-			return `${marker.marked_by.enrollment.student.first_name} ${marker.marked_by.enrollment.student.last_name}`
+			let marker = this.responseData.markings.find(
+				(marking: any) => marking.marked_by_id === markedById
+			);
+			return `${marker.marked_by.enrollment.student.first_name} ${marker.marked_by.enrollment.student.last_name}`;
 		}
 	}
 

@@ -78,7 +78,11 @@ export class StudentResultsComponent {
 		if (this.assignment.evaluation_method === "Q") {
 			this.tableColumns.push(
 				{ header: "Contribution", field: "contribution" },
-				{ header: "Rating", field: "rating" },
+				{
+					header: "Rating",
+					field: "rating",
+					...(this.groupingId() && { type: "link" }),
+				},
 				{ header: "Final Score", field: "final_score" }
 			);
 		} else {
@@ -168,12 +172,19 @@ export class StudentResultsComponent {
 	}
 
 	onRedirect(event: any) {
+		console.log(event);
+		console.log(this.responseData);
 		let milestoneId: string = "";
 		let groupingId = this.responseData.groupings.find(
-			(d: any) => d.enrollment_id === event.student_id
+			(d: any) => d.enrollment_id === Number(event.student_id)
 		).id;
-		for (const key in event) {
-			if (key.startsWith("milestone_")) milestoneId = key.split("_")[1];
+		if (this.assignment.evaluation_method === "WebAvalia") {
+			for (const key in event) {
+				if (key.startsWith("milestone_"))
+					milestoneId = key.split("_")[1];
+			}
+		} else {
+			milestoneId = this.responseData.milestones[0].id;
 		}
 		this.router.navigate(
 			[

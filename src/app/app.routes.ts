@@ -500,7 +500,7 @@ export const routes: Routes = [
 	},
 	{
 		title: "Confirmation",
-		path: "auth/confirmation-email",
+		path: "auth/confirm-email",
 		loadComponent: () =>
 			import(
 				"./components/auth/confirmation/confirmation.component"

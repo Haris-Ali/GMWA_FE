@@ -4,11 +4,19 @@ import { TableModule } from "primeng/table";
 import { Button } from "primeng/button";
 import { Tag } from "primeng/tag";
 import { ObjectPropertyTablePipe } from "../../pipes/object-property-table.pipe";
+import { Tooltip } from "primeng/tooltip";
 
 @Component({
 	selector: "app-table",
 	standalone: true,
-	imports: [CommonModule, TableModule, Button, Tag, ObjectPropertyTablePipe],
+	imports: [
+		CommonModule,
+		TableModule,
+		Button,
+		Tag,
+		Tooltip,
+		ObjectPropertyTablePipe,
+	],
 	template: `
 		<p-table
 			[columns]="cols()"
@@ -52,6 +60,11 @@ import { ObjectPropertyTablePipe } from "../../pipes/object-property-table.pipe"
 												button.condition
 													? button.condition(rowData)
 													: true
+											"
+											[pTooltip]="
+												button.tooltip
+													? button.tooltip
+													: ''
 											"
 										/>
 									</ng-container>

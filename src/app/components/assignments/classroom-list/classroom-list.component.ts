@@ -110,6 +110,10 @@ export class ClassroomAssignmentsListComponent {
 				data.status === "published" ? "danger" : "success",
 			callback: (data: Assignment) => this.toggleStatus(data),
 			condition: (data: Assignment) => this.userRole === "teacher",
+			tooltip: (data: Assignment) =>
+				data.status === "published"
+					? "Moving an assignment to draft will make it no longer visible to the enrolled students"
+					: "Publishing an assignment will make it visible to the enrolling students",
 		},
 		{
 			label: "Edit",
@@ -183,7 +187,7 @@ export class ClassroomAssignmentsListComponent {
 	showResults(id: number) {
 		this.router.navigate([
 			`/classrooms/${this.classroomId()}/assignments/${id}/results`,
-		])
+		]);
 	}
 
 	calculateMarks(data: any) {

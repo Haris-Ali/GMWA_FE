@@ -62,30 +62,6 @@
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-2">
-			<label for="students" class="font-bold">
-				Students
-				<span class="text-red-600">*</span>
-			</label>
-			<p-multiselect
-				formControlName="enrollment_ids"
-				[options]="enrolledStudents"
-				optionLabel="student_name"
-				optionValue="id"
-				placeholder="Select students"
-				class="w-full md:w-72 lg:w-96"
-			/>
-			<div
-				class="text-red-600 mt-2"
-				*ngIf="
-					groupForm.get('enrollment_ids')?.invalid &&
-					groupForm.get('enrollment_ids')?.touched
-				"
-			>
-				Select at least one student
-			</div>
-		</div>
-
 		<div formGroupName="setting" class="flex flex-col gap-2">
 			<ng-container
 				*ngFor="let field of getSettingsControls() | keyvalue"
@@ -166,6 +142,30 @@
 					</div>
 				</div>
 			</ng-container>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<label for="students" class="font-bold">
+				Students
+				<span class="text-red-600">*</span>
+			</label>
+			<p-multiselect
+				formControlName="enrollment_ids"
+				[options]="enrolledStudents"
+				optionLabel="student_name"
+				optionValue="id"
+				placeholder="Select students"
+				class="w-full md:w-72 lg:w-96"
+			/>
+			<div
+				class="text-red-600 mt-2"
+				*ngIf="
+					groupForm.get('enrollment_ids')?.invalid &&
+					groupForm.get('enrollment_ids')?.touched
+				"
+			>
+				Select at least one student
+			</div>
 		</div>
 
 		<div class="flex gap-2">

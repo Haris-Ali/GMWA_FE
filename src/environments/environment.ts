@@ -3,5 +3,6 @@ export const environment = {
 	production: false,
 
 	//   baseUrl: 'http://localhost:3000/api/v1/en',
-	baseUrl: "http://localhost:3000",
+	// baseUrl: "http://localhost:3000",
+	baseUrl: "https://groupmarkingwebapp-production.up.railway.app",
 };

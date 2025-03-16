@@ -2,7 +2,7 @@ import { Component, OnInit, inject, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpService } from "../../../../services/http.service";
 import { Button } from "primeng/button";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 import { InputTextModule } from "primeng/inputtext";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -20,6 +20,7 @@ import { globals } from "../../../../globals";
 		Button,
 		SelectButtonModule,
 		TextareaModule,
+		RouterModule,
 	],
 	providers: [HttpService],
 	templateUrl: "./update.component.html",
